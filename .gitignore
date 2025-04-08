@@ -1,0 +1,36 @@
+## Ignore build results
+bin/
+obj/
+
+## Ignore user-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## Ignore ASP.NET Core secrets and settings
+appsettings.Development.json
+appsettings.Local.json
+secrets.json
+
+## Ignore Rider/VSCode settings
+.vscode/
+.idea/
+
+## Ignore publish directory
+publish/
+
+## Ignore Mac and Linux file system stuff
+.DS_Store
+*.swp
+*.swo
+
+## Ignore logs
+*.log
+
+## Ignore database migration dumps (if any)
+*.sql
+
+## Ignore environment-specific files
+.env
+.env.*
