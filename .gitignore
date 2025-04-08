@@ -34,3 +34,6 @@ publish/
 ## Ignore environment-specific files
 .env
 .env.*
+
+## Ignore my planning docs
+planning/
