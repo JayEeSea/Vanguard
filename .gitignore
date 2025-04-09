@@ -30,10 +30,11 @@ publish/
 
 ## Ignore database migration dumps (if any)
 *.sql
+*.db
 
 ## Ignore environment-specific files
 .env
 .env.*
 
-## Ignore my planning docs
+## Ignore developers planning docs
 planning/
