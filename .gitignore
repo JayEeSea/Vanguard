@@ -36,5 +36,6 @@ publish/
 .env
 .env.*
 
-## Ignore developers planning docs
+## Ignore developers planning docs and scripts
 planning/
+dev/

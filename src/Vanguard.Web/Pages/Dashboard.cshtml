@@ -1,0 +1,11 @@
+﻿@page
+@model Vanguard.Web.Pages.DashboardModel
+@{
+    ViewData["Title"] = "Your Dashboard";
+    Layout = "_Layout";
+}
+
+<h1>@Model.WelcomeText, @Model.DisplayName!</h1>
+<p><strong>@Model.TimeLabel:</strong> @Model.LocalTimeString</p>
+
+<p>This is your member dashboard.</p>
