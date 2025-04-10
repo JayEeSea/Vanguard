@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <root>
   <data name="Welcome" xml:space="preserve">
-    <value>Welcome back</value>
+    <value>Willkommen zurück</value>
   </data>
   <data name="LocalTime" xml:space="preserve">
-    <value>Current Local Time</value>
+    <value>Die aktuelle Ortszeit ist</value>
   </data>
 </root>

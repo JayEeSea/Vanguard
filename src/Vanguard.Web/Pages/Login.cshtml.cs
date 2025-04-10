@@ -16,7 +16,7 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
 using Vanguard.Web.Models;
 
-namespace Vanguard.Web.Areas.Identity.Pages.Account
+namespace Vanguard.Web.Pages
 {
     public class LoginModel : PageModel
     {

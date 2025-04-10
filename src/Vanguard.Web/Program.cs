@@ -26,8 +26,6 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
 });
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
 
-
-
 // DB Context
 builder.Services.AddDbContext<AppDbContext>(options =>
     options.UseMySql(
@@ -37,8 +35,10 @@ builder.Services.AddDbContext<AppDbContext>(options =>
 builder.Services.AddDefaultIdentity<ApplicationUser>(options => options.SignIn.RequireConfirmedAccount = false)
     .AddEntityFrameworkStores<AppDbContext>();
 
-// Identity services
-
+builder.Services.ConfigureApplicationCookie(options =>
+{
+options.LoginPath = "/login";
+});
 
 var app = builder.Build();
 
