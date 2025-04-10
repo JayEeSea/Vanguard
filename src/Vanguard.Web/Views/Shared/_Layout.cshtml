@@ -16,7 +16,7 @@
 </head>
 
 <body>
-    <header class="bg-dark">
+    <header>
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-dark">
                 <a class="navbar-brand" href="/">Vanguard</a>
@@ -42,17 +42,18 @@
             </nav>
         </div>
     </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+    <main role="main" class="pb-3">
+        <div class="container">
+            <div class="card bg-dark text-white shadow p-4">
+                @RenderBody()
+            </div>
+        </div>
+    </main>
 
-    <footer class="border-top footer text-muted text-center">
+    <footer class="border-top footer text-center">
         <div class="container">
             &copy; <span id="currentYear"></span> Vanguard - <a asp-area="" asp-controller="Home"
-                asp-action="Privacy">Privacy</a> | <a asp-area="" asp-controller="Home"
-                asp-action="Copyright">Copyright</a> | This site is maintained by the Vanguard Director of Engineering.
+                asp-action="Privacy">Privacy & Copyright</a> | This site is maintained by the Director of Engineering.
         </div>
     </footer>
     <script>
