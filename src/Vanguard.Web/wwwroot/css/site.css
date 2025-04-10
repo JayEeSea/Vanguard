@@ -25,6 +25,7 @@ html {
 body {
   margin-bottom: 60px;
   background-color: #121e2c;
+  color: rgba(255,255,255,0.95);
 }
 
 .form-floating > .form-control-plaintext::placeholder,
@@ -40,15 +41,15 @@ body {
 
 footer {
   font-size: 12px;
-  background-color: #001f4d;
+  background-color: #0a1a3c;
   color: white;
 }
 footer a {
-  color: white;
+  color: rgba(255,255,255,0.95);
 }
 
 header {
-  background-color: #001f4d;
+  background-color: #0a1a3c;
 }
 
 .navbar-dark .navbar-nav .nav-link {
@@ -74,4 +75,12 @@ header .navbar-brand {
 header .navbar-brand:hover {
   color: rgba(255,255,255,0.95) !important;
   text-decoration: none;
+}
+
+.nav-pills .nav-link {
+  color: white;
+}
+
+.nav-pills .nav-link:hover {
+  color: white;
 }
