@@ -10,6 +10,8 @@ namespace Vanguard.Web.Models
         public Universe Universe { get; set; }
         public int FactionParentId { get; set; }
         public Faction Faction { get; set; }
-        public ICollection<Character> Characters { get; set; }
+
+        public ICollection<Unit> Units { get; set; } = new List<Unit>();
+        public ICollection<Character> Characters { get; set; } = new List<Character>();
     }
 }

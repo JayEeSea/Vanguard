@@ -8,6 +8,8 @@ namespace Vanguard.Web.Models
         public string? ImageUrl { get; set; }
         public int UniverseParentId { get; set; }
         public Universe Universe { get; set; }
-        public ICollection<Character> Characters { get; set; }
+
+        public ICollection<Branch> Branches { get; set; } = new List<Branch>();
+        public ICollection<Character> Characters { get; set; } = new List<Character>();
     }
 }
