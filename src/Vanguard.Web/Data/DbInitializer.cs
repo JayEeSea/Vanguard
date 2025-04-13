@@ -37,12 +37,12 @@ namespace Vanguard.Web.Data
                 var result = await userManager.CreateAsync(user, "Admin123!!321nimdA");
                 if (result.Succeeded)
                 {
-                    await userManager.AddToRoleAsync(user, "Admin");
+                    await userManager.AddToRoleAsync(user, "GlobalAdmin");
                 }
             }
-            else if (!await userManager.IsInRoleAsync(adminUser, "Admin"))
+            else if (!await userManager.IsInRoleAsync(adminUser, "GlobalAdmin"))
             {
-                await userManager.AddToRoleAsync(adminUser, "Admin");
+                await userManager.AddToRoleAsync(adminUser, "GlobalAdmin");
             }
         }
     }

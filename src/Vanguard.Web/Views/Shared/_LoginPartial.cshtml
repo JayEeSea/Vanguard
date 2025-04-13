@@ -1,33 +1,54 @@
 @using Microsoft.AspNetCore.Identity
 @using Vanguard.Web.Models
-
 @inject SignInManager<ApplicationUser> SignInManager
 @inject UserManager<ApplicationUser> UserManager
 
 @{
     ApplicationUser? currentUser = null;
+    bool isGlobalAdmin = false;
+
     if (SignInManager.IsSignedIn(User))
     {
-        // Retrieve the currently signed-in user
-        currentUser = UserManager.GetUserAsync(User).GetAwaiter().GetResult();
+        currentUser = await UserManager.GetUserAsync(User);
+        if (currentUser != null)
+        {
+            isGlobalAdmin = await UserManager.IsInRoleAsync(currentUser, "GlobalAdmin");
+        }
     }
 }
 
-<ul class="navbar-nav">
+<ul class="navbar-nav align-items-center">
+    <!-- 🔍 Search icon placeholder -->
+    <li class="nav-item">
+        <a class="nav-link" href="#" title="Search">
+            <i class="bi bi-search"></i>
+        </a>
+    </li>
+
     @if (SignInManager.IsSignedIn(User) && currentUser != null)
     {
-        <li class="nav-item">
-            <a id="manage" class="nav-link" asp-area="Identity" asp-page="/Account/Manage/Index" title="Administration">
-                Administration
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                @currentUser.DisplayName
             </a>
-        </li>
-        <li class="nav-item">
-            <a class="nav-link" asp-page="/Dashboard" title="Dashboard">Dashboard</a>
-        </li>
-        <li class="nav-item">
-            <form id="logoutForm" class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button id="logout" type="submit" class="nav-link btn btn-link border-0">Logout</button>
-            </form>
+            <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="userDropdown">
+                @if (isGlobalAdmin)
+                {
+                    <li><a class="dropdown-item" href="/admin">Admin</a></li>
+                }
+                <li><a class="dropdown-item" asp-area="Identity" asp-page="/Account/Manage/Index">Account</a></li>
+                <li><a class="dropdown-item" asp-page="/Dashboard">Dashboard</a></li>
+                <li>
+                    <hr class="dropdown-divider" />
+                </li>
+                <li>
+                    <form id="logoutForm" class="d-inline" asp-area="Identity" asp-page="/Account/Logout"
+                        asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
+                        <button id="logout" type="submit" class="dropdown-item">Logout</button>
+                    </form>
+                </li>
+            </ul>
         </li>
     }
     else
