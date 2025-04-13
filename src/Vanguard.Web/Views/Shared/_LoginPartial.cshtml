@@ -5,7 +5,7 @@
 @inject UserManager<ApplicationUser> UserManager
 
 @{
-    ApplicationUser currentUser = null;
+    ApplicationUser? currentUser = null;
     if (SignInManager.IsSignedIn(User))
     {
         // Retrieve the currently signed-in user

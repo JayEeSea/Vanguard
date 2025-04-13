@@ -19,8 +19,8 @@ namespace Vanguard.Web.Pages
         _localizer = localizer;
     }
 
-    public string DisplayName { get; set; }
-    public string LocalTimeString { get; set; }
+    public string? DisplayName { get; set; }
+    public string? LocalTimeString { get; set; }
 
     public string WelcomeText => _localizer["Welcome"];
     public string TimeLabel => _localizer["LocalTime"];

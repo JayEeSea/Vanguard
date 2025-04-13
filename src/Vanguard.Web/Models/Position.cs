@@ -4,15 +4,15 @@ namespace Vanguard.Web.Models
     {
         public int Id { get; set; }
 
-        public int PositionTypeId { get; set; }
-        public PositionType PositionType { get; set; }
+        public int? PositionTypeId { get; set; }
+        public PositionType? PositionType { get; set; }
 
-        public string Name { get; set; }
-        public string Abbreviation { get; set; }
-        public int MinRankLevel { get; set; }
-        public Rank MinRank { get; set; }
-        public int MaxRankLevel { get; set; }
-        public Rank MaxRank { get; set; }
+        public required string Name { get; set; }
+        public required string Abbreviation { get; set; }
+        public int? MinRankLevel { get; set; }
+        public Rank? MinRank { get; set; }
+        public int? MaxRankLevel { get; set; }
+        public Rank? MaxRank { get; set; }
 
         public string? ImageUrl { get; set; }
 
@@ -27,6 +27,10 @@ namespace Vanguard.Web.Models
 
         public int? UnitId { get; set; }
         public Unit? Unit { get; set; }
+
+        public bool RequiresScope { get; set; }
+        public bool IsActive { get; set; } = true;
+        public int DisplayOrder { get; set; }
 
         public ICollection<Character> Characters { get; set; } = new List<Character>();
     }
