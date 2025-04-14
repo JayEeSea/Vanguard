@@ -36,7 +36,7 @@
                     }
                     else
                     {
-                        <form asp-action="ReenableGender" asp-controller="Admin" asp-area="Admin" method="post"
+                        <form asp-action="ReenableGender" asp-controller="Genders" asp-area="Admin" method="post"
                             class="reenable-gender-form d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@gender.Id" />
@@ -127,7 +127,7 @@
             $('[data-bs-toggle="modal"][data-bs-target="#editModal"]').on('click', function () {
                 const genderId = $(this).data('id');
 
-                $('#editGenderModalPlaceholder').load(`/admin/editgender/${genderId}`, function () {
+                $('#editGenderModalPlaceholder').load(`/admin/genders/editgender/${genderId}`, function () {
                     const modalEl = document.getElementById('editModal');
                     const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
                     modal.show();
@@ -136,7 +136,7 @@
 
             // Load Create Modal
             $('[data-bs-toggle="modal"][data-bs-target="#createModal"]').on('click', function () {
-                $('#createGenderModalPlaceholder').load('/admin/creategender', function () {
+                $('#createGenderModalPlaceholder').load('/admin/genders/creategender', function () {
                     const modalEl = document.getElementById('createModal');
                     const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
                     modal.show();
@@ -220,7 +220,7 @@
         $('[data-bs-toggle="modal"][data-bs-target="#deleteModal"]').on('click', function () {
             const genderId = $(this).data('id');
 
-            $('#deleteGenderModalPlaceholder').load(`/admin/deletegender/${genderId}`, function () {
+            $('#deleteGenderModalPlaceholder').load(`/admin/genders/deletegender/${genderId}`, function () {
                 const modalEl = document.getElementById('deleteModal');
                 const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
                 modal.show();

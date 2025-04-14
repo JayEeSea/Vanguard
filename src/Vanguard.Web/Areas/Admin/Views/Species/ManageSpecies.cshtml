@@ -55,7 +55,7 @@
                     }
                     else
                     {
-                        <form asp-action="ReenableSpecies" asp-controller="Admin" asp-area="Admin" method="post"
+                        <form asp-action="ReenableSpecies" asp-controller="Species" asp-area="Admin" method="post"
                             class="reenable-species-form d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@species.Id" />
@@ -114,10 +114,12 @@
 @section Scripts {
     <script>
         $(function () {
-            $('#addSpeciesBtn').click(function () {
-                $.get('/admin/createspecies', function (data) {
-                    $('#modalPlaceholder').html(data);
-                    $('#createModal').modal('show');
+            // Load Create Modal
+            $('[data-bs-toggle="modal"][data-bs-target="#createModal"]').on('click', function () {
+                $('#createSpeciesModalPlaceholder').load('/admin/createspecies', function () {
+                    const modalEl = document.getElementById('createModal');
+                    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                    modal.show();
                 });
             });
 

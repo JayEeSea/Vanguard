@@ -1,6 +1,6 @@
 @model Vanguard.Web.Models.Gender
 
-<form id="editGenderForm" action="/admin/editgender" method="post" class="text-dark bg-light">
+<form id="editGenderForm" action="/admin/genders/editgender" method="post" class="text-dark bg-light">
     @Html.AntiForgeryToken()
     <input type="hidden" asp-for="Id" />
 

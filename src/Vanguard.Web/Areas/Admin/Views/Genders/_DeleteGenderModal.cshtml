@@ -1,6 +1,6 @@
 @model Vanguard.Web.Models.Gender
 
-<form id="deleteGenderForm" action="/admin/deletegender" method="post" class="delete-gender-form text-dark bg-light">
+<form id="deleteGenderForm" action="/admin/genders/deletegender" method="post" class="delete-gender-form text-dark bg-light">
     @Html.AntiForgeryToken()
     <input type="hidden" name="id" value="@Model.Id" />
 
