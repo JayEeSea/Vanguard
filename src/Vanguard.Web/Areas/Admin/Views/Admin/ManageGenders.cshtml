@@ -1,7 +1,27 @@
+@model List<Vanguard.Web.Models.Gender>
+
 @{
     ViewData["Title"] = "Manage Genders";
-    Layout = "_Layout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>@ViewData["Title"]</h2>
-<p>Gender management tools coming soon.</p>
+
+<h2 class="mb-4">@ViewData["Title"]</h2>
+
+<table class="table table-dark table-hover table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var gender in Model)
+        {
+            <tr>
+                <td>@gender.Name</td>
+                <td>@gender.Description</td>
+            </tr>
+        }
+    </tbody>
+</table>
 <p style="text-align: center"><a href="~/admin">Back</a></p>

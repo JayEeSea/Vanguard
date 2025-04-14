@@ -84,3 +84,28 @@ header .navbar-brand:hover {
 .nav-pills .nav-link:hover {
   color: white;
 }
+
+.admin-panel-box {
+  background-color: #212529;
+  color: white;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+}
+
+.admin-panel-box h5 {
+  color: white;
+}
+
+.card.border-0 {
+  border: none !important;
+  background-color: #1e1e1e !important;
+  box-shadow:
+      0 2px 4px rgba(0, 0, 0, 0.3),
+      0 8px 16px rgba(0, 0, 0, 0.25);
+  transition: box-shadow 0.2s ease-in-out;
+}
+
+.card.border-0::before {
+  border: none !important;
+}

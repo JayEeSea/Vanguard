@@ -16,6 +16,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
 
+// Force lowercase URLs
+builder.Services.Configure<RouteOptions>(options =>
+{
+    options.LowercaseUrls = true;
+    options.LowercaseQueryStrings = true;
+});
+
 // Supported cultures for localisation
 var supportedCultures = new[] { "en-AU", "en-US", "fr-FR", "de-DE", "en-gb", "es-ES" };
 
