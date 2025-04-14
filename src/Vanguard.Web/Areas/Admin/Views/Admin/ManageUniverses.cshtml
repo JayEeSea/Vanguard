@@ -4,4 +4,16 @@
 }
 <h2>@ViewData["Title"]</h2>
 <p>Universe management tools coming soon.</p>
-<p style="text-align: center"><a href="~/admin">Back</a></p>
+
+<!-- Buttons -->
+<div class="admin-button-group">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
+            Add New Universe
+        </a>
+
+        <a asp-area="" asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary">
+            ← Back to Admin Dashboard
+        </a>
+    </div>
+</div>

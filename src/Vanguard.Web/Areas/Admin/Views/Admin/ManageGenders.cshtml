@@ -12,16 +12,271 @@
         <tr>
             <th>Name</th>
             <th>Description</th>
+            <th>Actions</th>
         </tr>
     </thead>
     <tbody>
         @foreach (var gender in Model)
         {
-            <tr>
+            <tr class="@(gender.IsActive ? "" : "fst-italic text-muted")">
                 <td>@gender.Name</td>
                 <td>@gender.Description</td>
+                <td>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editModal"
+                        data-id="@gender.Id">
+                        Edit
+                    </button>
+
+                    @if (gender.IsActive)
+                    {
+                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                            data-id="@gender.Id">
+                            Disable
+                        </button>
+                    }
+                    else
+                    {
+                        <form asp-action="ReenableGender" asp-controller="Admin" asp-area="Admin" method="post"
+                            class="reenable-gender-form d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@gender.Id" />
+                            <button type="submit" class="btn btn-sm btn-success">Enable</button>
+                        </form>
+                    }
+                </td>
             </tr>
         }
     </tbody>
 </table>
-<p style="text-align: center"><a href="~/admin">Back</a></p>
+
+<!-- Buttons -->
+<div class="admin-button-group">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
+            Add New Gender
+        </a>
+
+        <a asp-area="" asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary">
+            ← Back to Admin Dashboard
+        </a>
+    </div>
+</div>
+
+<!-- MODALS  -->
+<!-- Edit Modal -->
+<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="editGenderModalPlaceholder">
+                <!-- Modal body content will be injected here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="createGenderModalPlaceholder">
+            <!-- Content loaded via AJAX -->
+        </div>
+    </div>
+</div>
+
+<!-- Delete Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="deleteGenderModalPlaceholder">
+            <!-- Loaded via AJAX -->
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+    <script
+        src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validation-unobtrusive/4.0.0/jquery.validate.unobtrusive.min.js"></script>
+
+    <script>
+        $(document).ready(function () {
+            //DEBUG
+            console.log("🧠 Scripts loaded");
+
+            $(document).on('submit', '.reenable-gender-form', function (e) {
+                e.preventDefault();
+                console.log("🚀 AJAX form triggered");
+
+                const form = $(this);
+
+                $.ajax({
+                    url: form.attr('action'),
+                    method: form.attr('method'),
+                    data: form.serialize(),
+                    success: function () {
+                        console.log("✅ Reenabled successfully");
+                        location.reload();
+                    },
+                    error: function (xhr) {
+                        console.error("❌ Reenable failed:", xhr.responseText);
+                    }
+                });
+            });
+            //DEBUG
+
+            // Load Edit Modal
+            $('[data-bs-toggle="modal"][data-bs-target="#editModal"]').on('click', function () {
+                const genderId = $(this).data('id');
+
+                $('#editGenderModalPlaceholder').load(`/admin/editgender/${genderId}`, function () {
+                    const modalEl = document.getElementById('editModal');
+                    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                    modal.show();
+                });
+            });
+
+            // Load Create Modal
+            $('[data-bs-toggle="modal"][data-bs-target="#createModal"]').on('click', function () {
+                $('#createGenderModalPlaceholder').load('/admin/creategender', function () {
+                    const modalEl = document.getElementById('createModal');
+                    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                    modal.show();
+                });
+            });
+
+            // Clean up Edit Modal
+            const editModalEl = document.getElementById('editModal');
+            editModalEl.addEventListener('hidden.bs.modal', function () {
+                $('#editGenderModalPlaceholder').html('');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            });
+
+            // Clean up Create Modal
+            const createModalEl = document.getElementById('createModal');
+            createModalEl.addEventListener('hidden.bs.modal', function () {
+                $('#createGenderModalPlaceholder').html('');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
+            });
+        });
+
+        // AJAX Submit: Edit Gender
+        $(document).on('submit', '#editGenderForm', function (e) {
+            e.preventDefault();
+            const form = $(this);
+
+            $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: form.serialize(),
+                success: function () {
+                    console.log("✅ Edit form submission succeeded.");
+                    const modalEl = document.getElementById('editModal');
+                    const modal = bootstrap.Modal.getInstance(modalEl);
+                    if (modal) {
+                        modal.hide();
+                        console.log("✅ Edit modal closed.");
+                    }
+                    location.reload(); // reload to show updated values
+                },
+                error: function (xhr) {
+                    console.error("❌ Edit form submission failed:");
+                    console.error(xhr.status, xhr.statusText);
+                    console.error(xhr.responseText);
+                    $('#editGenderModalPlaceholder').html(xhr.responseText);
+                }
+            });
+        });
+
+        // AJAX Submit: Create Gender
+        $(document).on('submit', '#createGenderForm', function (e) {
+            e.preventDefault();
+            const form = $(this);
+
+            $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: form.serialize(),
+                success: function () {
+                    console.log("✅ Create form submission succeeded.");
+                    const modalEl = document.getElementById('createModal');
+                    const modal = bootstrap.Modal.getInstance(modalEl);
+                    if (modal) {
+                        modal.hide();
+                        console.log("✅ Create modal closed.");
+                    }
+                    location.reload(); // reload to show the new entry
+                },
+                error: function (xhr) {
+                    console.error("❌ Create form submission failed:");
+                    console.error(xhr.status, xhr.statusText);
+                    console.error(xhr.responseText);
+                    $('#createGenderModalPlaceholder').html(xhr.responseText);
+                }
+            });
+        });
+
+        // Load Delete Modal
+        $('[data-bs-toggle="modal"][data-bs-target="#deleteModal"]').on('click', function () {
+            const genderId = $(this).data('id');
+
+            $('#deleteGenderModalPlaceholder').load(`/admin/deletegender/${genderId}`, function () {
+                const modalEl = document.getElementById('deleteModal');
+                const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                modal.show();
+            });
+        });
+
+        // Cleanup Delete Modal
+        const deleteModalEl = document.getElementById('deleteModal');
+        deleteModalEl.addEventListener('hidden.bs.modal', function () {
+            $('#deleteGenderModalPlaceholder').html('');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        });
+
+        // AJAX Submit: Soft Delete Gender
+        $(document).on('submit', '.delete-gender-form', function (e) {
+            e.preventDefault();
+            const form = $(this);
+
+            $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: form.serialize(),
+                success: function () {
+                    console.log("🗑️ Gender deleted.");
+                    location.reload(); // refresh to hide the deleted row
+                },
+                error: function (xhr) {
+                    console.error("❌ Delete failed:");
+                    console.error(xhr.status, xhr.statusText);
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        // AJAX Handler for Reenable
+        $(document).on('submit', '.reenable-gender-form', function (e) {
+            e.preventDefault();
+            const form = $(this);
+
+            $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: form.serialize(),
+                success: function () {
+                    console.log("✅ Gender reenabled.");
+                    location.reload();
+                },
+                error: function (xhr) {
+                    console.error("❌ Reenable failed:");
+                    console.error(xhr.status, xhr.statusText);
+                    console.error(xhr.responseText);
+                }
+            });
+
+            return false;
+        });
+    </script>
+}
