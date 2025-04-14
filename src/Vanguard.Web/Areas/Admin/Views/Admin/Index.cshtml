@@ -1,16 +1,16 @@
 @{
     ViewData["Title"] = "Admin Dashboard";
-    Layout = "_Layout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 <h2>@ViewData["Title"]</h2>
 <ul>
-    <li><a asp-action="ManageRanks">Manage Ranks</a></li>
-    <li><a asp-action="ManagePositions">Manage Positions</a></li>
-    <li><a asp-action="ManagePositionTypes">Manage Positions Types</a></li>
-    <li><a asp-action="ManageUniverses">Manage Universes</a></li>
-    <li><a asp-action="ManageFactions">Manage Factions</a></li>
-    <li><a asp-action="ManageBranches">Manage Branches</a></li>
-    <li><a asp-action="ManageUnits">Manage Units</a></li>
-    <li><a asp-action="ManageGenders">Manage Genders</a></li>
-    <li><a asp-action="ManageSpecies">Manage Species</a></li>
+    <li><a asp-area="Admin" asp-controller="Admin" asp-action="ManageRanks">Manage Ranks</a></li>
+    <li><a asp-area="Admin" asp-controller="Admin" asp-action="ManagePositions">Manage Positions</a></li>
+    <li><a asp-area="Admin" asp-controller="Admin" asp-action="ManagePositionTypes">Manage Position Types</a></li>
+    <li><a asp-area="Admin" asp-controller="Admin" asp-action="ManageUniverses">Manage Universes</a></li>
+    <li><a asp-area="Admin" asp-controller="Admin" asp-action="ManageFactions">Manage Factions</a></li>
+    <li><a asp-area="Admin" asp-controller="Admin" asp-action="ManageBranches">Manage Branches</a></li>
+    <li><a asp-area="Admin" asp-controller="Admin" asp-action="ManageUnits">Manage Units</a></li>
+    <li><a asp-area="Admin" asp-controller="Admin" asp-action="ManageGenders">Manage Genders</a></li>
+    <li><a asp-area="Admin" asp-controller="Admin" asp-action="ManageSpecies">Manage Species</a></li>
 </ul>

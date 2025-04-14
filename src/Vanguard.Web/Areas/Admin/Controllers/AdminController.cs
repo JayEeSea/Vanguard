@@ -14,5 +14,17 @@ namespace Vanguard.Web.Areas.Admin.Controllers
         public IActionResult ManagePositions() => View();
 
         public IActionResult ManageUnits() => View();
+
+        public IActionResult ManageUniverses() => View();
+
+        public IActionResult ManageFactions() => View();
+
+        public IActionResult ManageBranches() => View();
+
+        public IActionResult ManagePositionTypes() => View();
+
+        public IActionResult ManageSpecies() => View();
+
+        public IActionResult ManageGenders() => View();
     }
 } 
