@@ -10,6 +10,7 @@ namespace Vanguard.Web.Data
             : base(options) { }
 
         public DbSet<Character> Characters { get; set; }
+        public DbSet<CharacterType> CharacterTypes { get; set; }
         public DbSet<Species> Species { get; set; }
         public DbSet<Gender> Genders { get; set; }
         public DbSet<Position> Positions { get; set; }
@@ -461,6 +462,12 @@ namespace Vanguard.Web.Data
                 new Rank { Id = 84, Name = "Da'", Abbreviation = "DA", UniverseId = 2, FactionId = 4, BranchId = 6, Level = 10, IsActive = true, DisplayOrder = 10 },
                 new Rank { Id = 85, Name = "beq", Abbreviation = "BE", UniverseId = 2, FactionId = 4, BranchId = 6, Level = 11, IsActive = true, DisplayOrder = 11 },
                 new Rank { Id = 86, Name = "rewbe'", Abbreviation = "RE", UniverseId = 2, FactionId = 4, BranchId = 6, Level = 12, IsActive = true, DisplayOrder = 12 }
+            );
+
+            // Seeding CharacterType
+            builder.Entity<CharacterType>().HasData(
+                new CharacterType { Id = 1, Name = "Player" },
+                new CharacterType { Id = 2, Name = "NPC" }
             );
         }
     }

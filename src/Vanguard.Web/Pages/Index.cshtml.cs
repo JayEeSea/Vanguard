@@ -9,7 +9,12 @@ namespace Vanguard.Web.Pages
         {
             if (User.Identity != null && User.Identity.IsAuthenticated)
             {
-                return RedirectToPage("/Dashboard");
+                if (User.IsInRole("GlobalAdmin"))
+                {
+                    return Redirect("/admin");
+                }
+
+                return RedirectToPage("/dashboard");
             }
 
             return Page();

@@ -1,8 +1,6 @@
-using System;
-
-namespace Vanguard.Web.Models
+﻿namespace Vanguard.Web.Models
 {
-    public class Character
+    public class Npc
     {
         public int Id { get; set; }
         public required string DisplayName { get; set; }
@@ -13,7 +11,7 @@ namespace Vanguard.Web.Models
         public CharacterType CharacterType { get; set; } = null!;
         public DateTimeOffset DateCreated { get; set; }
         public string? AddressedName { get; set; }
-        public DateTimeOffset DateOfBirth { get; set; }
+        public DateTimeOffset? DateOfBirth { get; set; }
         public string? PlaceOfBirth { get; set; }
         public string? ImageUrl { get; set; }
         public string? Appearance { get; set; }
@@ -23,10 +21,6 @@ namespace Vanguard.Web.Models
         public Species? Species { get; set; }
         public int? GenderId { get; set; }
         public Gender? Gender { get; set; }
-        public string? MemberId { get; set; }
-        public ApplicationUser? Member { get; set; }
-        public int? PositionId { get; set; }
-        public Position? Position { get; set; }
         public int? RankId { get; set; }
         public Rank? Rank { get; set; }
         public int? UniverseId { get; set; }
