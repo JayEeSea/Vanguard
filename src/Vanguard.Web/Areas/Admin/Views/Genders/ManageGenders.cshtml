@@ -29,7 +29,7 @@
 
                     @if (gender.IsActive)
                     {
-                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#disableModal"
                             data-id="@gender.Id">
                             Disable
                         </button>
@@ -83,10 +83,10 @@
     </div>
 </div>
 
-<!-- Delete Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<!-- Disable Modal -->
+<div class="modal fade" id="disableModal" tabindex="-1" aria-labelledby="disableModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content" id="deleteGenderModalPlaceholder">
+        <div class="modal-content" id="disableGenderModalPlaceholder">
             <!-- Loaded via AJAX -->
         </div>
     </div>
@@ -99,30 +99,6 @@
 
     <script>
         $(document).ready(function () {
-            //DEBUG
-            console.log("🧠 Scripts loaded");
-
-            $(document).on('submit', '.reenable-gender-form', function (e) {
-                e.preventDefault();
-                console.log("🚀 AJAX form triggered");
-
-                const form = $(this);
-
-                $.ajax({
-                    url: form.attr('action'),
-                    method: form.attr('method'),
-                    data: form.serialize(),
-                    success: function () {
-                        console.log("✅ Reenabled successfully");
-                        location.reload();
-                    },
-                    error: function (xhr) {
-                        console.error("❌ Reenable failed:", xhr.responseText);
-                    }
-                });
-            });
-            //DEBUG
-
             // Load Edit Modal
             $('[data-bs-toggle="modal"][data-bs-target="#editModal"]').on('click', function () {
                 const genderId = $(this).data('id');
@@ -216,27 +192,27 @@
             });
         });
 
-        // Load Delete Modal
-        $('[data-bs-toggle="modal"][data-bs-target="#deleteModal"]').on('click', function () {
+        // Load Disable Modal
+        $('[data-bs-toggle="modal"][data-bs-target="#disableModal"]').on('click', function () {
             const genderId = $(this).data('id');
 
-            $('#deleteGenderModalPlaceholder').load(`/admin/genders/deletegender/${genderId}`, function () {
-                const modalEl = document.getElementById('deleteModal');
+            $('#disableGenderModalPlaceholder').load(`/admin/genders/disablegender/${genderId}`, function () {
+                const modalEl = document.getElementById('disableModal');
                 const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
                 modal.show();
             });
         });
 
-        // Cleanup Delete Modal
-        const deleteModalEl = document.getElementById('deleteModal');
-        deleteModalEl.addEventListener('hidden.bs.modal', function () {
-            $('#deleteGenderModalPlaceholder').html('');
+        // Cleanup Disable Modal
+        const disableModalEl = document.getElementById('disableModal');
+        disableModalEl.addEventListener('hidden.bs.modal', function () {
+            $('#disableGenderModalPlaceholder').html('');
             $('body').removeClass('modal-open');
             $('.modal-backdrop').remove();
         });
 
-        // AJAX Submit: Soft Delete Gender
-        $(document).on('submit', '.delete-gender-form', function (e) {
+        // AJAX Submit: Soft Disable Gender
+        $(document).on('submit', '.disable-gender-form', function (e) {
             e.preventDefault();
             const form = $(this);
 
@@ -245,11 +221,11 @@
                 method: form.attr('method'),
                 data: form.serialize(),
                 success: function () {
-                    console.log("🗑️ Gender deleted.");
-                    location.reload(); // refresh to hide the deleted row
+                    console.log("🗑️ Gender disabled.");
+                    location.reload(); // refresh to hide the disabled row
                 },
                 error: function (xhr) {
-                    console.error("❌ Delete failed:");
+                    console.error("❌ Disable failed:");
                     console.error(xhr.status, xhr.statusText);
                     console.error(xhr.responseText);
                 }

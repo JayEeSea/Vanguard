@@ -11,5 +11,6 @@ namespace Vanguard.Web.Models
 
         public ICollection<Faction>? Factions { get; set; } = new List<Faction>();
         public ICollection<Character>? Characters { get; set; } = new List<Character>();
+        public ICollection<Species>? Species { get; set; }
     }
 }

@@ -98,8 +98,8 @@ namespace Vanguard.Web.Areas.Admin.Controllers
             return BadRequest(PartialView("_CreateGenderModal", gender));
         }
 
-        [HttpGet("deletegender/{id}")]
-        public IActionResult DeleteGender(int id)
+        [HttpGet("disablegender/{id}")]
+        public IActionResult DDisableGender(int id)
         {
             var gender = _context.Genders
                 .IgnoreQueryFilters()
@@ -107,12 +107,12 @@ namespace Vanguard.Web.Areas.Admin.Controllers
             if (gender == null)
                 return NotFound();
 
-            return PartialView("_DeleteGenderModal", gender);
+            return PartialView("_DisableGenderModal", gender);
         }
 
-        [HttpPost("deletegender")]
+        [HttpPost("disablegender")]
         [ValidateAntiForgeryToken]
-        public IActionResult DeleteGenderConfirmed(int id)
+        public IActionResult DisableGenderConfirmed(int id)
         {
             var gender = _context.Genders
                 .IgnoreQueryFilters()

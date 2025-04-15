@@ -22,7 +22,7 @@
             </th>
             <th>
                 Base Species
-                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="The global species this one is based on. Used for linking species variants."></i>
+                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="The primary species this one is based on. Used for linking species variants."></i>
             </th>
             <th>Actions</th>
         </tr>
@@ -41,14 +41,14 @@
                         : Html.Raw("<i>Primary species</i>"))
                 </td>
                 <td>
-                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editModal"
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editSpeciesModal"
                         data-id="@species.Id">
                         Edit
                     </button>
 
                     @if (species.IsActive)
                     {
-                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal"
+                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSpeciesModal"
                             data-id="@species.Id">
                             Disable
                         </button>
@@ -70,10 +70,10 @@
 
 <!-- MODALS  -->
 <!-- Edit Modal -->
-<div class="modal fade" id="editModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal fade" id="editSpeciesModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div id="editGenderModalPlaceholder">
+            <div id="editSpeciesModalPlaceholder">
                 <!-- Modal body content will be injected here -->
             </div>
         </div>
@@ -81,18 +81,18 @@
 </div>
 
 <!-- Create Modal -->
-<div class="modal fade" id="createModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+<div class="modal fade" id="createSpeciesModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content" id="createGenderModalPlaceholder">
-            <!-- Content loaded via AJAX -->
+        <div class="modal-content" id="createSpeciesModalPlaceholder">
+            <!-- Loaded via AJAX -->
         </div>
     </div>
 </div>
 
 <!-- Delete Modal -->
-<div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<div class="modal fade" id="deleteSpeciesModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content" id="deleteGenderModalPlaceholder">
+        <div class="modal-content" id="deleteSpeciesModalPlaceholder">
             <!-- Loaded via AJAX -->
         </div>
     </div>
@@ -101,7 +101,7 @@
 <!-- Buttons -->
 <div class="admin-button-group">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createModal">
+        <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createSpeciesModal">
             Add New Species
         </a>
 
@@ -113,37 +113,41 @@
 
 @section Scripts {
     <script>
-        $(function () {
-            // Load Create Modal
-            $('[data-bs-toggle="modal"][data-bs-target="#createModal"]').on('click', function () {
-                $('#createSpeciesModalPlaceholder').load('/admin/createspecies', function () {
-                    const modalEl = document.getElementById('createModal');
+        $(document).ready(function () {
+            // Load Edit Modal
+            $('[data-bs-toggle="modal"][data-bs-target="#editSpeciesModal"]').on('click', function () {
+                const genderId = $(this).data('id');
+
+                $('#editSpeciesModalPlaceholder').load(`/admin/species/editspecies/${speciesId}`, function () {
+                    const modalEl = document.getElementById('editSpeciesModal');
                     const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
                     modal.show();
                 });
             });
 
-            $('.editSpeciesBtn').click(function () {
-                const id = $(this).data('id');
-                $.get('/admin/editspecies/' + id, function (data) {
-                    $('#modalPlaceholder').html(data);
-                    $('#editModal').modal('show');
+            // Load Create Modal
+            $('[data-bs-toggle="modal"][data-bs-target="#createSpeciesModal"]').on('click', function () {
+                $('#createSpeciesModalPlaceholder').load('/admin/species/createspecies', function () {
+                    const modalEl = document.getElementById('createSpeciesModal');
+                    const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                    modal.show();
                 });
             });
 
-            $('.deleteSpeciesBtn').click(function () {
-                const id = $(this).data('id');
-                $.get('/admin/deletespecies/' + id, function (data) {
-                    $('#modalPlaceholder').html(data);
-                    $('#deleteModal').modal('show');
-                });
+            // Clean up Edit Modal
+            const editModalEl = document.getElementById('editSpeciesModal');
+            editModalEl.addEventListener('hidden.bs.modal', function () {
+                $('#editSpeciesModalPlaceholder').html('');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
             });
 
-            $('.reenableSpeciesBtn').click(function () {
-                const id = $(this).data('id');
-                $.post('/admin/reenablespecies', { id: id }, function () {
-                    location.reload();
-                });
+            // Clean up Create Modal
+            const createModalEl = document.getElementById('createSpeciesModal');
+            createModalEl.addEventListener('hidden.bs.modal', function () {
+                $('#createSpeciesModalPlaceholder').html('');
+                $('body').removeClass('modal-open');
+                $('.modal-backdrop').remove();
             });
         });
 
@@ -151,6 +155,34 @@
         var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
             tooltipTriggerList.forEach(function (tooltipTriggerEl) {
                 new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+
+        // AJAX Submit: Create Species
+        $(document).on('submit', '#createSpeciesForm', function (e) {
+            e.preventDefault();
+            const form = $(this);
+
+            $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: form.serialize(),
+                success: function () {
+                    console.log("✅ Create form submission succeeded.");
+                    const modalEl = document.getElementById('createSpeciesModal');
+                    const modal = bootstrap.Modal.getInstance(modalEl);
+                    if (modal) {
+                        modal.hide();
+                        console.log("✅ Create modal closed.");
+                    }
+                    location.reload(); // reload to show the new entry
+                },
+                error: function (xhr) {
+                    console.error("❌ Create form submission failed:");
+                    console.error(xhr.status, xhr.statusText);
+                    console.error(xhr.responseText);
+                    $('#createSpeciesModalPlaceholder').html(xhr.responseText);
+                }
+            });
         });
     </script>
 }

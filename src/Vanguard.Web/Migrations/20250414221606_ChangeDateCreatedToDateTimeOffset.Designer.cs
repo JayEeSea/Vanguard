@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Vanguard.Web.Data;
 
@@ -11,9 +12,11 @@ using Vanguard.Web.Data;
 namespace Vanguard.Web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250414221606_ChangeDateCreatedToDateTimeOffset")]
+    partial class ChangeDateCreatedToDateTimeOffset
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -353,10 +356,10 @@ namespace Vanguard.Web.Migrations
                     b.Property<int?>("BranchId")
                         .HasColumnType("int");
 
-                    b.Property<DateTimeOffset>("DateCreated")
+                    b.Property<DateTime>("DateCreated")
                         .HasColumnType("datetime(6)");
 
-                    b.Property<DateTimeOffset>("DateOfBirth")
+                    b.Property<DateTime>("DateOfBirth")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("DisplayName")
@@ -382,14 +385,14 @@ namespace Vanguard.Web.Migrations
                     b.Property<bool>("IsActive")
                         .HasColumnType("tinyint(1)");
 
-                    b.Property<DateTimeOffset?>("LastMedalDate")
+                    b.Property<DateTime?>("LastMedalDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("LastName")
                         .IsRequired()
                         .HasColumnType("longtext");
 
-                    b.Property<DateTimeOffset?>("LastPromotionDate")
+                    b.Property<DateTime?>("LastPromotionDate")
                         .HasColumnType("datetime(6)");
 
                     b.Property<string>("MemberId")

@@ -18,19 +18,31 @@
             <span asp-validation-for="Description" class="text-danger"></span>
         </div>
         <div class="mb-3">
-            <label asp-for="Universe" class="form-label"></label>
-            <input asp-for="Universe" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+            <label for="UniverseId" class="form-label" data-bs-toggle="tooltip" title="Select the universe this species belongs to.">Universe</label>
+            <select class="form-select" id="UniverseId" name="UniverseId">
+                <option value="">-- Select Universe --</option>
+                @if (ViewBag.Universes is List<Universe> universes)
+                {
+                    foreach (var universe in universes)
+                    {
+                        <option value="@universe.Id">@universe.Name</option>
+                    }
+                }
+            </select>
         </div>
         <div class="mb-3">
-            <label asp-for="Faction" class="form-label"></label>
-            <input asp-for="Faction" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+            <label for="FactionId" class="form-label" data-bs-toggle="tooltip" title="Select the faction this species belongs to.">Faction</label>
+            <select class="form-select" id="FactionId" name="FactionId">
+                <option value="">-- Select Faction --</option>
+                <!-- Options will be dynamically filled -->
+            </select>
         </div>
         <div class="mb-3">
-            <label asp-for="CanonicalSpecies" class="form-label"></label>
-            <input asp-for="CanonicalSpecies" class="form-control" />
-            <span asp-validation-for="Name" class="text-danger"></span>
+            <label for="CanonicalSpeciesId" class="form-label">Base Species</label>
+            <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Only required if you need to add this species as a child of another."></i>
+            <select class="form-select" asp-for="CanonicalSpeciesId" asp-items="@(new SelectList(ViewBag.CanonicalSpecies, "Id", "Name"))">
+                <option value="">-- Select Base Species --</option>
+            </select>
         </div>
     </div>
     <div class="modal-footer">
@@ -38,3 +50,45 @@
         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
     </div>
 </form>
+
+<script>
+    // Populate Faction dropdown based on selected Universe
+        (function () {
+        const universeDropdown = document.getElementById("UniverseId");
+        const factionDropdown = document.getElementById("FactionId");
+
+        if (!universeDropdown || !factionDropdown) return;
+
+        // Prevent double binding
+        if (universeDropdown.dataset.listenerAttached === "true") return;
+
+        universeDropdown.addEventListener("change", function () {
+            const universeId = this.value;
+            factionDropdown.innerHTML = '<option value="">-- Select Faction --</option>';
+
+            if (!universeId) return;
+
+            fetch(`/admin/species/getfactions/${universeId}`)
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(faction => {
+                        const option = document.createElement("option");
+                        option.value = faction.id;
+                        option.text = faction.name;
+                        factionDropdown.appendChild(option);
+                    });
+                })
+                .catch(error => {
+                    console.error('Error loading factions:', error);
+                });
+        });
+
+        universeDropdown.dataset.listenerAttached = "true";
+
+        // Tooltip initialisation
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl);
+        });
+    })();
+</script>

@@ -9,9 +9,9 @@ namespace Vanguard.Web.Models
         public required string FirstName { get; set; }
         public required string LastName { get; set; }
         public string? FullName { get; set; }
-        public DateTime DateCreated { get; set; }
+        public DateTimeOffset DateCreated { get; set; }
         public string? AddressedName { get; set; }
-        public DateTime DateOfBirth { get; set; }
+        public DateTimeOffset DateOfBirth { get; set; }
         public string? PlaceOfBirth { get; set; }
         public string? ImageUrl { get; set; }
         public string? Appearance { get; set; }
@@ -36,7 +36,7 @@ namespace Vanguard.Web.Models
         public int? UnitId { get; set; }
         public Unit? Unit { get; set; }
         public bool IsActive { get; set; } = true;
-        public DateTime? LastPromotionDate { get; set; }
-        public DateTime? LastMedalDate { get; set; }
+        public DateTimeOffset? LastPromotionDate { get; set; }
+        public DateTimeOffset? LastMedalDate { get; set; }
     }
 }

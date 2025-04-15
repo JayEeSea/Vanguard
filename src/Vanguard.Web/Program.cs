@@ -96,14 +96,14 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-// Static asset mapping (optional custom helper?)
+// Static asset mapping
 app.MapStaticAssets();
 
-// Razor Pages support (e.g., Identity scaffolding)
+// Razor Pages support
 app.MapRazorPages();
 
 // --------------------------------------------------
-// Route Mapping (ORDER MATTERS!)
+// Route Mapping
 // --------------------------------------------------
 
 // 1. AREA ROUTES FIRST — matches /Admin/Controller/Action, avoids being swallowed by the default route

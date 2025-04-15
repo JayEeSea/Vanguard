@@ -21,17 +21,6 @@ namespace Vanguard.Web.Areas.Admin.Controllers
         [HttpGet("")]
         public IActionResult Index()
         {
-            var genders = _context.Genders
-                .IgnoreQueryFilters()
-                .OrderBy(g => g.DisplayOrder)
-                .ToList();
-
-            return View("ManageSpecies", genders);
-        }
-
-        [HttpGet("managespecies")]
-        public IActionResult ManageSpecies()
-        {
             var species = _context.Species
                 .IgnoreQueryFilters()
                 .Include(s => s.Universe)
@@ -40,12 +29,19 @@ namespace Vanguard.Web.Areas.Admin.Controllers
                 .OrderBy(s => s.DisplayOrder)
                 .ToList();
 
-            return View(species);
+            return View("ManageSpecies", species);
         }
 
         [HttpGet("createspecies")]
         public IActionResult CreateSpecies()
         {
+            ViewBag.Universes = _context.Universes.OrderBy(u => u.DisplayOrder).ToList();
+            ViewBag.Factions = _context.Factions.OrderBy(f => f.DisplayOrder).ToList();
+            ViewBag.CanonicalSpecies = _context.Species
+                .Where(s => s.UniverseId == null && s.FactionId == null) // Optional: only global species
+                .OrderBy(s => s.DisplayOrder)
+                .ToList();
+
             return PartialView("_CreateSpeciesModal", new Species { Name = "" });
         }
 
@@ -73,6 +69,18 @@ namespace Vanguard.Web.Areas.Admin.Controllers
             }
 
             return BadRequest(PartialView("_CreateSpeciesModal", species));
+        }
+
+        [HttpGet("getfactions/{universeId}")]
+        public IActionResult GetFactions(int universeId)
+        {
+            var factions = _context.Factions
+                .Where(f => f.UniverseId == universeId)
+                .OrderBy(f => f.DisplayOrder)
+                .Select(f => new { f.Id, f.Name })
+                .ToList();
+
+            return Json(factions);
         }
     }
 }

@@ -13,5 +13,6 @@ namespace Vanguard.Web.Models
 
         public ICollection<Branch> Branches { get; set; } = new List<Branch>();
         public ICollection<Character> Characters { get; set; } = new List<Character>();
+        public ICollection<Species>? Species { get; set; }
     }
 }
