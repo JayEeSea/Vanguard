@@ -82,5 +82,101 @@ namespace Vanguard.Web.Areas.Admin.Controllers
 
             return Json(factions);
         }
+
+        [HttpGet("disablespecies/{id}")]
+        public IActionResult DisableSpecies(int id)
+        {
+            var species = _context.Species
+                .IgnoreQueryFilters()
+                .FirstOrDefault(g => g.Id == id);
+            if (species == null)
+                return NotFound();
+
+            return PartialView("_DisableSpeciesModal", species);
+        }
+
+        [HttpPost("disablespecies")]
+        [ValidateAntiForgeryToken]
+        public IActionResult DisableSpeciesConfirmed(int id)
+        {
+            var species = _context.Species
+                .IgnoreQueryFilters()
+                .FirstOrDefault(g => g.Id == id);
+            if (species == null)
+                return NotFound();
+
+            species.IsActive = false;
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpPost("reenablespecies")]
+        [ValidateAntiForgeryToken]
+        public IActionResult ReenableSpecies(int id)
+        {
+            var species = _context.Species
+                .IgnoreQueryFilters()
+                .FirstOrDefault(g => g.Id == id);
+            if (species == null)
+                return NotFound();
+
+            species.IsActive = true;
+            _context.SaveChanges();
+
+            return Ok();
+        }
+
+        [HttpGet("editspecies/{id}")]
+        public IActionResult EditSpecies(int id)
+        {
+            var species = _context.Species
+                .IgnoreQueryFilters()
+                .FirstOrDefault(g => g.Id == id);
+            if (species == null)
+                return NotFound();
+
+            ViewBag.Universes = _context.Universes.OrderBy(u => u.DisplayOrder).ToList();
+            ViewBag.Factions = _context.Factions.OrderBy(f => f.DisplayOrder).ToList();
+            ViewBag.CanonicalSpecies = _context.Species
+                .Where(s => s.UniverseId == null && s.FactionId == null)
+                .OrderBy(s => s.DisplayOrder)
+                .ToList();
+
+            return PartialView("_EditSpeciesModal", species);
+        }
+
+        [HttpPost("editspecies")]
+        [ValidateAntiForgeryToken]
+        public IActionResult EditSpecies(Species species)
+        {
+            if (ModelState.IsValid)
+            {
+                var existing = _context.Species
+                    .IgnoreQueryFilters()
+                    .FirstOrDefault(g => g.Id == species.Id);
+                if (existing == null)
+                    return NotFound();
+
+                existing.Name = species.Name;
+                existing.Description = species.Description;
+                existing.UniverseId = species.UniverseId;
+                existing.FactionId = species.FactionId;
+                existing.CanonicalSpeciesId = species.CanonicalSpeciesId;
+
+                _context.SaveChanges();
+                return Ok();
+            }
+
+            // Repopulate dropdowns before returning modal with validation errors
+            ViewBag.Universes = _context.Universes.OrderBy(u => u.DisplayOrder).ToList();
+            ViewBag.Factions = _context.Factions.OrderBy(f => f.DisplayOrder).ToList();
+            ViewBag.CanonicalSpecies = _context.Species
+                .Where(s => s.UniverseId == null && s.FactionId == null)
+                .OrderBy(s => s.DisplayOrder)
+                .ToList();
+
+            return BadRequest(PartialView("_EditSpeciesModal", species));
+        }
     }
 }

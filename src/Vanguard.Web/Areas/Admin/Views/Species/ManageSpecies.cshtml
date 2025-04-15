@@ -36,27 +36,27 @@
                 <td>@(species.Universe != null ? species.Universe.Name : "Global")</td>
                 <td>@(species.Faction != null ? species.Faction.Name : "Global")</td>
                 <td>
-                    @(species.CanonicalSpecies != null 
-                        ? species.CanonicalSpecies.Name 
+                    @(species.CanonicalSpecies != null
+                        ? species.CanonicalSpecies.Name
                         : Html.Raw("<i>Primary species</i>"))
                 </td>
                 <td>
                     <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editSpeciesModal"
-                        data-id="@species.Id">
+                            data-id="@species.Id">
                         Edit
                     </button>
 
                     @if (species.IsActive)
                     {
-                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#deleteSpeciesModal"
-                            data-id="@species.Id">
+                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#disableSpeciesModal"
+                                data-id="@species.Id">
                             Disable
                         </button>
                     }
                     else
                     {
                         <form asp-action="ReenableSpecies" asp-controller="Species" asp-area="Admin" method="post"
-                            class="reenable-species-form d-inline">
+                              class="reenable-species-form d-inline">
                             @Html.AntiForgeryToken()
                             <input type="hidden" name="id" value="@species.Id" />
                             <button type="submit" class="btn btn-sm btn-success">Enable</button>
@@ -89,10 +89,10 @@
     </div>
 </div>
 
-<!-- Delete Modal -->
-<div class="modal fade" id="deleteSpeciesModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+<!-- Disable Modal -->
+<div class="modal fade" id="disableSpeciesModal" tabindex="-1" aria-labelledby="disableModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content" id="deleteSpeciesModalPlaceholder">
+        <div class="modal-content" id="disableSpeciesModalPlaceholder">
             <!-- Loaded via AJAX -->
         </div>
     </div>
@@ -116,7 +116,7 @@
         $(document).ready(function () {
             // Load Edit Modal
             $('[data-bs-toggle="modal"][data-bs-target="#editSpeciesModal"]').on('click', function () {
-                const genderId = $(this).data('id');
+                const speciesId = $(this).data('id');
 
                 $('#editSpeciesModalPlaceholder').load(`/admin/species/editspecies/${speciesId}`, function () {
                     const modalEl = document.getElementById('editSpeciesModal');
@@ -181,6 +181,95 @@
                     console.error(xhr.status, xhr.statusText);
                     console.error(xhr.responseText);
                     $('#createSpeciesModalPlaceholder').html(xhr.responseText);
+                }
+            });
+        });
+
+        // AJAX Submit: Edit Species
+        $(document).on('submit', '#editSpeciesForm', function (e) {
+            e.preventDefault();
+            const form = $(this);
+
+            $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: form.serialize(),
+                success: function () {
+                    console.log("✅ Edit form submission succeeded.");
+                    const modalEl = document.getElementById('editSpeciesModal');
+                    const modal = bootstrap.Modal.getInstance(modalEl);
+                    if (modal) {
+                        modal.hide();
+                        console.log("✅ Edit modal closed.");
+                    }
+                    location.reload(); // refresh to show updated data
+                },
+                error: function (xhr) {
+                    console.error("❌ Edit form submission failed:");
+                    console.error(xhr.status, xhr.statusText);
+                    console.error(xhr.responseText);
+                    $('#editSpeciesModalPlaceholder').html(xhr.responseText); // re-render modal with validation errors
+                }
+            });
+        });
+
+        // Load Disable Modal
+        $('[data-bs-toggle="modal"][data-bs-target="#disableSpeciesModal"]').on('click', function () {
+            const speciesId = $(this).data('id');
+
+            $('#disableSpeciesModalPlaceholder').load(`/admin/species/disablespecies/${speciesId}`, function () {
+                const modalEl = document.getElementById('disableSpeciesModal');
+                const modal = bootstrap.Modal.getOrCreateInstance(modalEl);
+                modal.show();
+            });
+        });
+
+        // Cleanup Disable Modal
+        const disableSpeciesModalEl = document.getElementById('disableSpeciesModal');
+        disableSpeciesModalEl.addEventListener('hidden.bs.modal', function () {
+            $('#disableSpeciesModalPlaceholder').html('');
+            $('body').removeClass('modal-open');
+            $('.modal-backdrop').remove();
+        });
+
+        // AJAX Submit: Soft Disable Species
+        $(document).on('submit', '.disable-species-form', function (e) {
+            e.preventDefault();
+            const form = $(this);
+
+            $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: form.serialize(),
+                success: function () {
+                    console.log("🗑️ Species disabled.");
+                    location.reload(); // refresh to hide the disabled row
+                },
+                error: function (xhr) {
+                    console.error("❌ Disable failed:");
+                    console.error(xhr.status, xhr.statusText);
+                    console.error(xhr.responseText);
+                }
+            });
+        });
+
+        // AJAX Handler for Reenable
+        $(document).on('submit', '.reenable-species-form', function (e) {
+            e.preventDefault();
+            const form = $(this);
+
+            $.ajax({
+                url: form.attr('action'),
+                method: form.attr('method'),
+                data: form.serialize(),
+                success: function () {
+                    console.log("✅ Species reenabled.");
+                    location.reload();
+                },
+                error: function (xhr) {
+                    console.error("❌ Reenable failed:");
+                    console.error(xhr.status, xhr.statusText);
+                    console.error(xhr.responseText);
                 }
             });
         });
