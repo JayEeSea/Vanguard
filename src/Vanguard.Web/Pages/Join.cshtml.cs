@@ -76,18 +76,25 @@ namespace Vanguard.Web.Pages
             public string ConfirmPassword { get; set; }
         }
 
-        public async Task OnGetAsync(string returnUrl = null)
+        public async Task<IActionResult> OnGetAsync(string returnUrl = null)
         {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/dashboard");
+            }
+
             TimeZoneOptions = TimeZoneInfo.GetSystemTimeZones()
                 .Select(tz => new SelectListItem
-            {
-                Value = tz.Id,
-                Text = tz.DisplayName // or tz.Id if you prefer
-            })
-            .ToList();
+                {
+                    Value = tz.Id,
+                    Text = tz.DisplayName
+                })
+                .ToList();
 
             ReturnUrl = returnUrl;
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
+
+            return Page();
         }
 
         public async Task<IActionResult> OnPostAsync(string returnUrl = null)

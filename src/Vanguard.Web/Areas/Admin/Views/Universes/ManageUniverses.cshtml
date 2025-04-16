@@ -1,0 +1,137 @@
+﻿@model List<Vanguard.Web.Models.Universe>
+
+@{
+    ViewData["Title"] = "Manage Universes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mb-4">@ViewData["Title"]</h2>
+
+<table class="table table-dark table-hover table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>
+                Use Star Wars Anchor Date?
+                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Star Wars only value. Defaults to the day Star Wars entered theatres."></i>
+            </th>
+            <th>
+                Star Wars Anchor Date
+                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Star Wars only value. Defaults to the day Star Wars entered theatres."></i>
+            </th>
+            <th>
+                Display Format
+            </th>
+            <th>
+                Enable Stardate
+                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Star Trek only value. Enable to use Stardates and modify other Star Trek settings."></i>
+            </th>
+            <th>
+                Offset Years
+                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Star Trek only value. The value is <Target IC Year> MINUS <Current Year>"></i>
+            </th>
+            <th>
+                Use Offset?
+                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Star Trek only value. Enables the use of the Offset Years value."></i>
+            </th>
+            <th>
+                Stardate Base Date
+                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Star Trek only value. Sets the base date used to derive stardate. TNG era is generally 1 January 2323."></i>
+            </th>
+            <th>
+                Stardate Multiplier
+                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Star Trek only value. If in another era of Star Trek where Stardates advance slower or faster per real life day, alter this value."></i>
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var universes in Model)
+        {
+            <tr class="@(universes.IsActive ? "" : "fst-italic text-muted")">
+                <td>@universes.Name</td>
+                <td>@universes.Description</td>
+                <td>@(universes.UsesBBYABY ? "✅" : "❌")</td>
+                <td>@universes.BBYABYAnchorDate</td>
+                <td>@universes.DisplayFormat</td>
+                <td>@(universes.EnableStardate ? "✅" : "❌")</td>
+                <td>@universes.OffsetYears</td>
+                <td>@(universes.UsesOffset ? "✅" : "❌")</td>
+                <td>@universes.StardateBaseDate</td>
+                <td>@universes.StardateMultiplier</td>
+                <td>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editUniversesModal"
+                            data-id="@universes.Id">
+                        Edit
+                    </button>
+
+                    @if (universes.IsActive)
+                    {
+                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#disableUniversesModal"
+                                data-id="@universes.Id">
+                            Disable
+                        </button>
+                    }
+                    else
+                    {
+                        <form asp-action="ReenableUniverses" asp-controller="Universes" asp-area="Admin" method="post"
+                              class="reenable-universes-form d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@universes.Id" />
+                            <button type="submit" class="btn btn-sm btn-success">Enable</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- MODALS  -->
+<!-- Edit Modal -->
+<div class="modal fade" id="editUniversesModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="editUniversesModalPlaceholder">
+                <!-- Modal body content will be injected here -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createUniversesModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="createUniversesModalPlaceholder">
+            <!-- Loaded via AJAX -->
+        </div>
+    </div>
+</div>
+
+<!-- Disable Modal -->
+<div class="modal fade" id="disableUniversesModal" tabindex="-1" aria-labelledby="disableModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="disableUniversesModalPlaceholder">
+            <!-- Loaded via AJAX -->
+        </div>
+    </div>
+</div>
+
+<!-- Buttons -->
+<div class="admin-button-group">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createUniversesModal">
+            Add New Universe
+        </a>
+
+        <a asp-area="" asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary">
+            ← Back to Admin Dashboard
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/universes.js" asp-append-version="true"></script>
+}
