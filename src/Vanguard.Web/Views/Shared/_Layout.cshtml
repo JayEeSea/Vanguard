@@ -4,7 +4,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vanguard | United Across Galaxies</title>
+    <title>@AppSettings.Value.AppName | @AppSettings.Value.AppMotto</title>
     <script type="importmap"></script>
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/Vanguard.Web.styles.css" asp-append-version="true" />
@@ -17,7 +17,7 @@
     <header>
         <div class="container">
             <nav class="navbar navbar-expand-lg navbar-dark">
-                <a class="navbar-brand" href="/">Vanguard</a>
+                <a class="navbar-brand" href="/">@AppSettings.Value.AppName</a>
 
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#mainNav">
                     <span class="navbar-toggler-icon"></span>
@@ -40,7 +40,7 @@
             </nav>
         </div>
     </header>
-    <main role="main" class="pb-3">
+    <main role="main" class="pb-5">
         <div class="container">
             <div class="card bg-dark text-white shadow p-4">
                 @RenderBody()
@@ -48,20 +48,58 @@
         </div>
     </main>
 
-    <footer class="border-top footer text-center">
+    <footer class="border-top footer-custom-bg text-light pt-4">
         <div class="container">
-            &copy; <span id="currentYear"></span> Vanguard - <a asp-area="" asp-controller="Home"
-                asp-action="Privacy">Privacy & Copyright</a> | This site is maintained by the Director of Engineering.
+            <!-- Footer Cards Row -->
+            <div class="row row-cols-1 row-cols-md-3 g-3 d-flex align-items-stretch mb-3">
+                <!-- About / Credits Card -->
+                <div class="col">
+                    <div class="card bg-dark text-light h-100 d-flex flex-column shadow">
+                        <div class="card-header border-bottom border-secondary text-center">
+                            <strong>About</strong>
+                        </div>
+                        <div class="card-body">
+                            <p class="mb-1">
+                                <a asp-controller="Home" asp-action="Privacy"
+                                   class="link-light link-underline-opacity-25-hover">
+                                    Privacy & Copyright
+                                </a>
+                            </p>
+                            
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Useful Links Card -->
+                <div class="col">
+                    <div class="card bg-dark text-light h-100 d-flex flex-column shadow">
+                        <div class="card-header border-bottom border-secondary text-center">
+                            <strong>Links</strong>
+                        </div>
+                        <div class="card-body">
+                            <ul class="list-unstyled mb-0">
+                                <li><a href="/join" class="link-light">Join the Club</a></li>
+                                <li><a href="#" class="link-light">Search</a></li>
+                                <li><a href="#" class="link-light">Competitions</a></li>
+                                <li><a href="#" class="link-light">Contact</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- In-Character Date Card -->
+                <div class="col">
+                    @await Component.InvokeAsync("InCharacterDate")
+                </div>
+            </div>
+
+            <!-- Copyright Bar -->
+            <div class="text-center small border-secondary footer-bottom-bar">
+                &copy; @DateTime.UtcNow.Year @AppSettings.Value.AppName. All rights reserved.<br />
+                This site is maintained by the Director of Engineering
+            </div>
         </div>
     </footer>
-    <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            const yearSpan = document.getElementById("currentYear");
-            if (yearSpan) {
-                yearSpan.textContent = new Date().getFullYear();
-            }
-        });
-    </script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>

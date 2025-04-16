@@ -5,6 +5,8 @@ using Microsoft.AspNetCore.Identity;
 using System.Globalization;
 using Microsoft.AspNetCore.Localization;
 using Microsoft.Extensions.Options;
+using Vanguard.Web.Services;
+using Vanguard.Web.Config;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -15,6 +17,9 @@ var builder = WebApplication.CreateBuilder(args);
 // MVC + Razor support
 builder.Services.AddControllersWithViews();
 builder.Services.AddRazorPages();
+
+// IHttpContextAccessor for localisation
+builder.Services.AddHttpContextAccessor();
 
 // Force lowercase URLs
 builder.Services.Configure<RouteOptions>(options =>
@@ -37,6 +42,18 @@ builder.Services.Configure<RequestLocalizationOptions>(options =>
     options.RequestCultureProviders.Insert(0, new AcceptLanguageHeaderRequestCultureProvider());
 });
 builder.Services.AddLocalization(options => options.ResourcesPath = "Resources");
+builder.Services.AddScoped<IUniverseDateService>(provider =>
+{
+    var httpContextAccessor = provider.GetRequiredService<IHttpContextAccessor>();
+    var requestCulture = httpContextAccessor.HttpContext?.Features
+        .Get<IRequestCultureFeature>()?.RequestCulture?.Culture ?? CultureInfo.InvariantCulture;
+
+    return new UniverseDateService(requestCulture);
+});
+
+// Configure custom global variables
+builder.Services.Configure<AppSettings>(
+    builder.Configuration.GetSection("AppSettings"));
 
 // Entity Framework DB context with MySQL (via Pomelo)
 builder.Services.AddDbContext<AppDbContext>(options =>

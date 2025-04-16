@@ -1,11 +1,11 @@
 html {
-  font-size: 14px;
+    font-size: 14px;
 }
 
 @media (min-width: 768px) {
-  html {
-    font-size: 16px;
-  }
+    html {
+        font-size: 16px;
+    }
 }
 
 .btn:focus,
@@ -13,99 +13,114 @@ html {
 .btn-link.nav-link:focus,
 .form-control:focus,
 .form-check-input:focus {
-  box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
 
 html {
-  position: relative;
-  min-height: 100%;
-  background-color: #121e2c;
+    position: relative;
+    min-height: 100%;
+    background-color: #121e2c;
 }
 
 body {
-  margin-bottom: 60px;
-  background-color: #121e2c;
-  color: rgba(255,255,255,0.95);
+    margin: 0;
+    padding: 0;
+    background-color: #121e2c;
+    color: rgba(255,255,255,0.95);
 }
 
 .form-floating > .form-control-plaintext::placeholder,
 .form-floating > .form-control::placeholder {
-  color: var(--bs-secondary-color);
-  text-align: end;
+    color: var(--bs-secondary-color);
+    text-align: end;
 }
 
 .form-floating > .form-control-plaintext:focus::placeholder,
 .form-floating > .form-control:focus::placeholder {
-  text-align: start;
-}
-
-footer {
-  font-size: 12px;
-  background-color: #0a1a3c;
-  color: white;
-}
-footer a {
-  color: rgba(255,255,255,0.95);
+    text-align: start;
 }
 
 header {
-  background-color: #0a1a3c;
+    background-color: #0a1a3c;
 }
 
 .navbar-dark .navbar-nav .nav-link {
-  color: rgba(255,255,255,0.95);
+    color: rgba(255,255,255,0.95);
 }
 
 main {
-  background-color: #121e2c;
-  padding-top: 2rem;
-  padding-bottom: 2rem;
-  color: white;
-  flex-grow: 1;
+    background-color: #121e2c;
+    padding-top: 2rem;
+    padding-bottom: 2rem;
+    color: white;
+    flex-grow: 1;
 }
 
 main .container {
-  background-color: #121e2c;
+    background-color: #121e2c;
 }
 
 header .navbar-brand {
-  color: rgba(255,255,255,0.95) !important;
+    color: rgba(255,255,255,0.95) !important;
 }
 
 header .navbar-brand:hover {
-  color: rgba(255,255,255,0.95) !important;
-  text-decoration: none;
+    color: rgba(255,255,255,0.95) !important;
+    text-decoration: none;
 }
 
 .nav-pills .nav-link {
-  color: white;
+    color: white;
 }
 
 .nav-pills .nav-link:hover {
-  color: white;
+    color: white;
 }
 
 .admin-panel-box {
-  background-color: #212529;
-  color: white;
-  padding: 1rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
+    background-color: #212529;
+    color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.25rem rgba(0,0,0,0.075);
 }
 
 .admin-panel-box h5 {
-  color: white;
+    color: white;
 }
 
 .card.border-0 {
-  border: none !important;
-  background-color: #1e1e1e !important;
-  box-shadow:
-      0 2px 4px rgba(0, 0, 0, 0.3),
-      0 8px 16px rgba(0, 0, 0, 0.25);
-  transition: box-shadow 0.2s ease-in-out;
+    border: none !important;
+    background-color: #1e1e1e !important;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3), 0 8px 16px rgba(0, 0, 0, 0.25);
+    transition: box-shadow 0.2s ease-in-out;
 }
 
 .card.border-0::before {
-  border: none !important;
+    border: none !important;
+}
+
+footer {
+    font-size: 14px;
+    color: white;
+}
+
+.footer-custom-bg {
+    background-color: #0a1a3c !important;
+}
+
+footer a {
+    color: rgba(255,255,255,0.95);
+}
+
+.footer-time-box {
+    background-color: #0a1a3c;
+    color: white;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    min-width: 200px;
+}
+
+.footer-bottom-bar {
+    padding-bottom: 1rem;
 }

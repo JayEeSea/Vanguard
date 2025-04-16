@@ -3,6 +3,7 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Vanguard.Web.Data;
 
@@ -11,9 +12,11 @@ using Vanguard.Web.Data;
 namespace Vanguard.Web.Migrations
 {
     [DbContext(typeof(AppDbContext))]
-    partial class AppDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250415214715_AddICDateSupport")]
+    partial class AddICDateSupport
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -3710,7 +3713,7 @@ namespace Vanguard.Web.Migrations
                         {
                             Id = 2,
                             Description = "The final frontier",
-                            DisplayFormat = "ddd dd MMMM yyyy",
+                            DisplayFormat = "dd MMMM yyyy",
                             DisplayOrder = 2,
                             EnableStardate = true,
                             IsActive = true,

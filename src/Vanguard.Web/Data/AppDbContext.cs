@@ -35,7 +35,7 @@ namespace Vanguard.Web.Data
             builder.Entity<PositionType>()
                 .HasIndex(pt => pt.RoleName)
                 .IsUnique();
-            
+
             // Add unique index to Name in PositionType
             builder.Entity<PositionType>()
                 .HasIndex(pt => pt.Name)
@@ -67,7 +67,7 @@ namespace Vanguard.Web.Data
             // Species Check Constraint
             builder.Entity<Species>().ToTable(tb =>
             {
-                tb.HasCheckConstraint("CK_Species_ScopeOrGlobal", 
+                tb.HasCheckConstraint("CK_Species_ScopeOrGlobal",
                     "(UniverseId IS NOT NULL AND FactionId IS NOT NULL) OR " +
                     "(UniverseId IS NULL AND FactionId IS NULL)");
             });
@@ -137,8 +137,37 @@ namespace Vanguard.Web.Data
 
             // Seeding Universes
             builder.Entity<Universe>().HasData(
-            new Universe { Id = 1, Name = "Star Wars", Description = "A galaxy far, far away", DisplayOrder = 1, IsActive = true },
-            new Universe { Id = 2, Name = "Star Trek", Description = "The final frontier", DisplayOrder = 2, IsActive = true }
+                new Universe {
+                    Id = 1,
+                    Name = "Star Wars",
+                    Description = "A galaxy far, far away",
+                    DisplayOrder = 1,
+                    IsActive = true,
+                    UsesOffset = false,
+                    OffsetYears = null,
+                    UsesBBYABY = true,
+                    BBYABYAnchorDate = new DateTime(1977, 5, 25),
+                    DisplayFormat = "dd MMMM yyyy",
+                    EnableStardate = false,
+                    StardateBaseDate = null,
+                    StardateMultiplier = null
+                },
+                new Universe
+                {
+                    Id = 2,
+                    Name = "Star Trek",
+                    Description = "The final frontier",
+                    DisplayOrder = 2,
+                    IsActive = true,
+                    UsesOffset = true,
+                    OffsetYears = 385,
+                    UsesBBYABY = false,
+                    BBYABYAnchorDate = null,
+                    DisplayFormat = "ddd dd MMMM yyyy",
+                    EnableStardate = true,
+                    StardateBaseDate = new DateTime(2323, 1, 1),
+                    StardateMultiplier = 1000.0 / 365.25 // ~2.7379
+                }
             );
 
             // Add unique index to Name in Faction
@@ -180,7 +209,7 @@ namespace Vanguard.Web.Data
             // Soft delete filter for Branch
             builder.Entity<Branch>()
                 .HasQueryFilter(u => u.IsActive);
-            
+
             // Add unique index to FactionId and DisplayOrder in Branch for composite awareness in case names repeat across universes
             builder.Entity<Branch>()
                 .HasIndex(f => new { f.FactionId, f.DisplayOrder })
@@ -191,7 +220,7 @@ namespace Vanguard.Web.Data
             {
                 tb.HasCheckConstraint("CK_Branch_UniverseAndFactionRequired", "UniverseId IS NOT NULL AND FactionId IS NOT NULL");
             });
-            
+
             // Seeding Branches
             builder.Entity<Branch>().HasData(
                 new Branch { Id = 1, Name = "Imperial Navy", UniverseId = 1, FactionId = 1, DisplayOrder = 1, IsActive = true },
@@ -207,7 +236,7 @@ namespace Vanguard.Web.Data
             {
                 tb.HasCheckConstraint("CK_Unit_UniverseAndFactionAndBranchRequired", "UniverseId IS NOT NULL AND FactionId IS NOT NULL AND BranchId IS NOT NULL");
             });
-            
+
             // Add index to DisplayOrder in Unit
             builder.Entity<Unit>()
                 .HasIndex(u => u.DisplayOrder);
@@ -215,7 +244,7 @@ namespace Vanguard.Web.Data
             // Soft delete filter for Unit
             builder.Entity<Unit>()
                 .HasQueryFilter(u => u.IsActive);
-            
+
             // Add unique index to BranchId and DisplayOrder in Unit for composite awareness in case names repeat across universes
             builder.Entity<Unit>()
                 .HasIndex(f => new { f.BranchId, f.DisplayOrder })
@@ -356,7 +385,7 @@ namespace Vanguard.Web.Data
             // Rank Check Constraint
             builder.Entity<Rank>().ToTable(tb =>
             {
-                tb.HasCheckConstraint("CK_Rank_ScopeOrGlobal", 
+                tb.HasCheckConstraint("CK_Rank_ScopeOrGlobal",
                     "(UniverseId IS NOT NULL AND FactionId IS NOT NULL AND BranchId IS NOT NULL) OR " +
                     "(UniverseId IS NULL AND FactionId IS NULL AND BranchId IS NULL)");
             });
@@ -368,7 +397,7 @@ namespace Vanguard.Web.Data
             // Soft delete filter for Rank
             builder.Entity<Rank>()
                 .HasQueryFilter(u => u.IsActive);
-            
+
             // Add unique index to BranchId and DisplayOrder in Rank for composite awareness in case names repeat across branches
             builder.Entity<Rank>()
                 .HasIndex(f => new { f.BranchId, f.DisplayOrder })

@@ -1,15 +1,25 @@
 using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using Vanguard.Web.Config;
+using Vanguard.Web.Data;
 using Vanguard.Web.Models;
+using Vanguard.Web.Services;
 
 namespace Vanguard.Web.Controllers;
 
 public class HomeController : Controller
 {
+    private readonly IUniverseDateService _universeDateService;
     private readonly ILogger<HomeController> _logger;
+    private readonly AppDbContext _context;
 
-    public HomeController(ILogger<HomeController> logger)
+    public HomeController(
+        AppDbContext context,
+        IUniverseDateService universeDateService,
+        ILogger<HomeController> logger)
     {
+        _context = context;
+        _universeDateService = universeDateService;
         _logger = logger;
     }
 

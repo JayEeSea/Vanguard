@@ -1,0 +1,64 @@
+﻿@model List<Vanguard.Web.ViewComponents.InCharacterDateViewComponent.UniverseDateEntry>
+
+<div class="card bg-dark text-light h-100 d-flex flex-column shadow">
+    <div class="card-header border-bottom border-secondary text-center">
+        <strong class="text-center">Time/Date</strong>
+    </div>
+    <div class="card-body text-center">
+        @foreach (var entry in Model)
+        {
+            <div class="mb-1"><strong>@entry.UniverseName:</strong> @entry.DisplayDate</div>
+        }
+        <div><strong>Server Time:</strong> <span id="serverTime" class="text-decoration-underline" data-bs-toggle="tooltip" data-bs-placement="top" title=""></span></div>
+    </div>
+</div>
+
+<script>
+    function setInitialTooltip() {
+        const timeEl = document.getElementById('serverTime');
+        if (!timeEl) return;
+
+        const now = new Date();
+
+        const formattedDate = now.toLocaleDateString(undefined, {
+            weekday: 'long',
+            year: 'numeric',
+            month: 'long',
+            day: 'numeric'
+        });
+
+        timeEl.setAttribute("title", formattedDate);
+    }
+
+    function updateServerTime() {
+        const timeEl = document.getElementById('serverTime');
+        if (!timeEl) return;
+
+        const now = new Date();
+
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const seconds = now.getSeconds().toString().padStart(2, '0');
+        const formattedTime = `${hours}:${minutes}:${seconds}`;
+
+        timeEl.textContent = formattedTime;
+        // 🔕 Do NOT update title here
+    }
+
+    document.addEventListener("DOMContentLoaded", () => {
+        setInitialTooltip(); // ✅ Set title just once
+
+        // ✅ Init Bootstrap tooltip after title is set
+        const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+        tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+            new bootstrap.Tooltip(tooltipTriggerEl, {
+                placement: 'top',
+                delay: { show: 100, hide: 100 }
+            });
+        });
+
+        updateServerTime();
+        setInterval(updateServerTime, 1000);
+    });
+</script>
+
