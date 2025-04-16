@@ -11,6 +11,7 @@ obj/
 ## Ignore ASP.NET Core secrets and settings
 appsettings.Development.json
 appsettings.Local.json
+appsettings.json
 secrets.json
 
 ## Ignore Rider/VSCode settings
