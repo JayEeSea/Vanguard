@@ -1,0 +1,118 @@
+﻿@model Vanguard.Web.Models.Universe
+
+<form id="editUniversesForm" action="/admin/universes/edituniverses" method="post" class="text-dark bg-light">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <div class="modal-header">
+        <h5 class="modal-title">Edit Universe</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="DisplayFormat" class="form-label">Display Format</label>
+            <input asp-for="DisplayFormat" class="form-control" placeholder="e.g. dd MMMM yyyy" />
+            <span asp-validation-for="DisplayFormat" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <div class="form-check">
+                <input asp-for="UsesBBYABY" class="form-check-input" id="UsesBBYABY" />
+                <label asp-for="UsesBBYABY" class="form-check-label">Use BBY or ABY?</label>
+                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Activates the BBY/ABY dating system, where Year 0 is set to the Battle of Yavin. Used to show dates like 5 BBY or 2 ABY in character timelines."></i>
+            </div>
+            <span asp-validation-for="UsesBBYABY" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="BBYABYAnchorDate" class="form-label">Anchor Date</label>
+            <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Sets year ABY 0. Defaults to 25 May 1977."></i>
+            <input type="datetime-local"
+                   class="form-control"
+                   id="BBYABYAnchorDate"
+                   name="BBYABYAnchorDate"
+                   value="@(Model.BBYABYAnchorDate?.ToString("yyyy-MM-ddTHH:mm") ?? "1977-05-25T00:00")"
+                   placeholder="e.g. 1977-05-25 00:00" />
+            <span class="text-danger field-validation-valid"
+                  data-valmsg-for="BBYABYAnchorDate"
+                  data-valmsg-replace="true"></span>
+        </div>
+
+        <div class="mb-3">
+            <div class="form-check">
+                <input asp-for="EnableStardate" class="form-check-input" id="EnableStardate" />
+                <label asp-for="EnableStardate" class="form-check-label">Enable Stardate</label>
+                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Enables Stardate functionality for Star Trek Universes."></i>
+            </div>
+            <span asp-validation-for="EnableStardate" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <div class="form-check">
+                <input asp-for="UsesOffset" class="form-check-input" id="UsesOffset" />
+                <label asp-for="UsesOffset" class="form-check-label"></label>
+            </div>
+            <span asp-validation-for="UsesOffset" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="OffsetYears" class="form-label"></label>
+            <input asp-for="OffsetYears" class="form-control" />
+            <span asp-validation-for="OffsetYears" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label for="StardateBaseDate" class="form-label">Stardate Base Date</label>
+            <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="Sets year 0 for your IC stardate. Defaults to 1 January 2323 for TNG era stardates."></i>
+            <input type="datetime-local"
+                   class="form-control"
+                   id="StardateBaseDate"
+                   name="StardateBaseDate"
+                   value="@(Model.StardateBaseDate?.ToString("yyyy-MM-ddTHH:mm") ?? "2323-01-01T00:00")"
+                   placeholder="e.g. 2323-01-01 00:00" />
+            <span class="text-danger field-validation-valid"
+                  data-valmsg-for="StardateBaseDate"
+                  data-valmsg-replace="true"></span>
+        </div>
+
+        @{
+            var defaultStardateMultiplier = 1000.0 / 365.25;
+        }
+
+        <div class="mb-3">
+            <label for="StardateMultiplier" class="form-label">Stardate Multiplier</label>
+            <i class="bi bi-info-circle" data-bs-toggle="tooltip"
+               title="Controls the rate of in-character stardate progression. A higher multiplier means time passes faster in the stardate system relative to real-world time. For TNG era stardates, value is derived from 1000.0 / 365.25."></i>
+            <input type="number"
+                   step="any"
+                   class="form-control"
+                   id="StardateMultiplier"
+                   name="StardateMultiplier"
+                   value="@(Model.StardateMultiplier.HasValue ? Model.StardateMultiplier.Value.ToString("0.########") : defaultStardateMultiplier.ToString("0.########"))" />
+            <span class="text-danger field-validation-valid"
+                  data-valmsg-for="StardateMultiplier"
+                  data-valmsg-replace="true"></span>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    </div>
+</form>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/universes-modal.js" asp-append-version="true"></script>
