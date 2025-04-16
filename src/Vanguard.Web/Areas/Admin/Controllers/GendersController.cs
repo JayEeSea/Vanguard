@@ -99,7 +99,7 @@ namespace Vanguard.Web.Areas.Admin.Controllers
         }
 
         [HttpGet("disablegender/{id}")]
-        public IActionResult DDisableGender(int id)
+        public IActionResult DisableGender(int id)
         {
             var gender = _context.Genders
                 .IgnoreQueryFilters()
