@@ -19,16 +19,36 @@ namespace Vanguard.Web.Areas.Admin.Controllers
         }
 
         [HttpGet("")]
-        public IActionResult Index()
+        public IActionResult Index(int? universeId, int? factionId, int? branchId)
         {
-            var branches = _context.Branches
-                .IgnoreQueryFilters()
-                .Include(s => s.Universe)
-                .Include(s => s.Faction)
-                .OrderBy(s => s.DisplayOrder)
+            var query = _context.Ranks
+                .Include(r => r.Universe)
+                .Include(r => r.Faction)
+                .Include(r => r.Branch)
+                .AsQueryable();
+
+            if (universeId.HasValue)
+                query = query.Where(r => r.UniverseId == universeId.Value);
+
+            if (factionId.HasValue)
+                query = query.Where(r => r.FactionId == factionId.Value);
+
+            if (branchId.HasValue)
+                query = query.Where(r => r.BranchId == branchId.Value);
+
+            var ranks = query
+                .OrderBy(r => r.DisplayOrder)
                 .ToList();
 
-            return View("ManageBranches", branches);
+            ViewBag.Universes = _context.Universes.OrderBy(u => u.Name).ToList();
+            ViewBag.Factions = _context.Factions.OrderBy(f => f.Name).ToList();
+            ViewBag.Branches = _context.Branches.OrderBy(b => b.Name).ToList();
+
+            ViewBag.SelectedUniverseId = universeId;
+            ViewBag.SelectedFactionId = factionId;
+            ViewBag.SelectedBranchId = branchId;
+
+            return View("ManageRanks", ranks);
         }
 
         [HttpGet("disablebranches/{id}")]

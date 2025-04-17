@@ -1,70 +1,126 @@
-﻿@model List<Vanguard.Web.Models.Branch>
+﻿@model List<Vanguard.Web.Models.Rank>
 
 @{
-    ViewData["Title"] = "Manage Branches";
+    ViewData["Title"] = "Manage Ranks";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
 <h2 class="mb-4">@ViewData["Title"]</h2>
 
-<table class="table table-dark table-hover table-striped align-middle">
-    <thead>
-        <tr>
-            <th>Name</th>
-            <th>Description</th>
-            <th>
-                Universe
-                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="The Universe this branch is assigned to."></i>
-            </th>
-            <th>
-                Faction
-                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="The Faction this branch is assigned to."></i>
-            </th>
-            <th>Actions</th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var branches in Model)
-        {
-            <tr class="@(branches.IsActive ? "" : "fst-italic text-muted")">
-                <td>@branches.Name</td>
-                <td>@branches.Description</td>
-                <td>@(branches.Universe != null ? branches.Universe.Name : "Global")</td>
-                <td>@(branches.Faction != null ? branches.Faction.Name : "Global")</td>
-                <td>
-                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editBranchesModal"
-                            data-id="@branches.Id">
-                        Edit
-                    </button>
+<div class="card bg-transparent text-white mb-4 shadow-lg">
+    <div class="card-body">
+        <form method="get" asp-area="Admin" asp-controller="Ranks" asp-action="Index" class="row g-3 align-items-end">
+            <!-- Branch Dropdown -->
+            <div class="col-md-6">
+                <label for="branchId" class="form-label fw-semibold">Branch</label>
+                <select class="form-select" id="branchId" name="branchId">
+                    <option value="">-- Select Branch --</option>
+                    @foreach (var b in (List<Branch>)ViewBag.Branches)
+                    {
+                        var selected = (ViewBag.SelectedBranchId == b.Id) ? "selected" : "";
+                        @:<option value="@b.Id" @selected>@b.Name</option>
+                    }
+                </select>
+            </div>
 
-                    @if (branches.IsActive)
-                    {
-                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#disableBranchesModal"
-                                data-id="@branches.Id">
-                            Disable
-                        </button>
-                    }
-                    else
-                    {
-                        <form asp-action="ReenableBranches" asp-controller="Branches" asp-area="Admin" method="post"
-                              class="reenable-branches-form d-inline">
-                            @Html.AntiForgeryToken()
-                            <input type="hidden" name="id" value="@branches.Id" />
-                            <button type="submit" class="btn btn-sm btn-success">Enable</button>
-                        </form>
-                    }
-                </td>
+            <!-- Show Global Checkbox -->
+            <div class="col-md-6 pt-2">
+                <div class="form-check">
+                    <input class="form-check-input" type="checkbox" id="showGlobal" name="showGlobal"
+                           @(ViewBag.ShowGlobal == true ? "checked" : "") />
+                    <label class="form-check-label fw-semibold" for="showGlobal">
+                        Show only Global Ranks <span class="text-muted small">(Command Group)</span>
+                    </label>
+                </div>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary me-2">Filter</button>
+                <a asp-action="Index" asp-controller="Ranks" asp-area="Admin" class="btn btn-outline-secondary">Reset</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if ((bool)ViewBag.HasFiltered)
+{
+    <table class="table table-dark table-hover table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Image</th>
+                <th>Abbreviation</th>
+                <th>
+                    Universe
+                    <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="The Universe this rank is assigned to."></i>
+                </th>
+                <th>
+                    Faction
+                    <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="The Faction this rank is assigned to."></i>
+                </th>
+                <th>
+                    Branch
+                    <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="The Branch this rank is assigned to."></i>
+                </th>
+                <th>
+                    Level
+                    <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="The ranks level compared to others in this Branch. Higher equals higher rank."></i>
+                </th>
+                <th>Actions</th>
             </tr>
-        }
-    </tbody>
-</table>
+        </thead>
+        <tbody>
+            @foreach (var ranks in Model)
+            {
+                <tr class="@(ranks.IsActive ? "" : "fst-italic text-muted")">
+                    <td>@ranks.Name</td>
+                    <td><img src="@ranks.ImageUrl" /></td>
+                    <td>@ranks.Abbreviation</td>
+                    <td>@(ranks.Universe != null ? ranks.Universe.Name : "Command Group")</td>
+                    <td>@(ranks.Faction != null ? ranks.Faction.Name : "Command Group")</td>
+                    <td>@(ranks.Branch != null ? ranks.Branch.Name : "Command Group")</td>
+                    <td>@(ranks.Level = ranks.Level)</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editRanksModal"
+                                data-id="@ranks.Id">
+                            Edit
+                        </button>
+
+                        @if (ranks.IsActive)
+                        {
+                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#disableRanksModal"
+                                    data-id="@ranks.Id">
+                                Disable
+                            </button>
+                        }
+                        else
+                        {
+                            <form asp-area="Admin" asp-controller="Ranks" asp-action="ReenableRank" method="post" class="reenable-ranks-form">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@ranks.Id" />
+                                <button type="submit" class="btn btn-sm btn-success">Enable</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">
+        Use the filter above to display ranks.
+    </div>
+}
 
 <!-- MODALS  -->
 <!-- Edit Modal -->
-<div class="modal fade" id="editBranchesModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+<div class="modal fade" id="editRanksModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
-            <div id="editBranchesModalPlaceholder">
+            <div id="editRanksModalPlaceholder">
                 <!-- Loaded via AJAX -->
             </div>
         </div>
@@ -72,18 +128,18 @@
 </div>
 
 <!-- Create Modal -->
-<div class="modal fade" id="createBranchesModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+<div class="modal fade" id="createRanksModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content" id="createBranchesModalPlaceholder">
+        <div class="modal-content" id="createRanksModalPlaceholder">
             <!-- Loaded via AJAX -->
         </div>
     </div>
 </div>
 
 <!-- Disable Modal -->
-<div class="modal fade" id="disableBranchesModal" tabindex="-1" aria-labelledby="disableModalLabel" aria-hidden="true">
+<div class="modal fade" id="disableRanksModal" tabindex="-1" aria-labelledby="disableModalLabel" aria-hidden="true">
     <div class="modal-dialog">
-        <div class="modal-content" id="disableBranchesModalPlaceholder">
+        <div class="modal-content" id="disableRanksModalPlaceholder">
             <!-- Loaded via AJAX -->
         </div>
     </div>
@@ -92,7 +148,7 @@
 <!-- Buttons -->
 <div class="admin-button-group">
     <div class="d-flex justify-content-between align-items-center mb-3">
-        <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createBranchesModal">
+        <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createRanksModal">
             Add New Faction
         </a>
 
@@ -104,6 +160,6 @@
 
 @section Scripts {
     <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/branches.js" asp-append-version="true"></script>
-    <script src="~/js/branches-modal.js" asp-append-version="true"></script>
+    <script src="~/js/ranks.js" asp-append-version="true"></script>
+    <script src="~/js/ranks-modal.js" asp-append-version="true"></script>
 }
