@@ -21,6 +21,8 @@ namespace Vanguard.Web.Data
         public DbSet<Faction> Factions { get; set; }
         public DbSet<Branch> Branches { get; set; }
         public DbSet<Unit> Units { get; set; }
+        public DbSet<ShipClass> ShipClasses { get; set; }
+        public DbSet<Ship> Ship { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
@@ -254,27 +256,82 @@ namespace Vanguard.Web.Data
             // Seeding Units
             builder.Entity<Unit>().HasData(
                 new Unit { Id = 1, Name = "1st Sector Fleet", UniverseId = 1, FactionId = 1, BranchId = 1, DisplayOrder = 1, IsActive = true },
-                new Unit { Id = 2, Name = "ISD Devastator", UniverseId = 1, FactionId = 1, BranchId = 1, ParentUnitId = 1, DisplayOrder = 2, IsActive = true },
-                new Unit { Id = 3, Name = "10th Attack Wing", UniverseId = 1, FactionId = 2, BranchId = 1, ParentUnitId = 2, DisplayOrder = 3, IsActive = true },
-                new Unit { Id = 4, Name = "14th Bombardment Wing", UniverseId = 1, FactionId = 2, BranchId = 1, ParentUnitId = 3, DisplayOrder = 4, IsActive = true },
-                new Unit { Id = 5, Name = "116th Fighter Squadron", UniverseId = 1, FactionId = 2, BranchId = 1, ParentUnitId = 4, DisplayOrder = 5, IsActive = true },
-                new Unit { Id = 6, Name = "12th Bomber Squadron", UniverseId = 1, FactionId = 2, BranchId = 1, ParentUnitId = 4, DisplayOrder = 6, IsActive = true },
+                new Unit { Id = 2, Name = "ISD Devastator", UniverseId = 1, FactionId = 1, BranchId = 1, ParentUnitId = 1, DisplayOrder = 2, IsActive = true, ShipId = 1 },
+                new Unit { Id = 3, Name = "10th Attack Wing", UniverseId = 1, FactionId = 1, BranchId = 1, ParentUnitId = 2, DisplayOrder = 3, IsActive = true },
+                new Unit { Id = 4, Name = "14th Bombardment Wing", UniverseId = 1, FactionId = 1, BranchId = 1, ParentUnitId = 3, DisplayOrder = 4, IsActive = true },
+                new Unit { Id = 5, Name = "116th Fighter Squadron", UniverseId = 1, FactionId = 1, BranchId = 1, ParentUnitId = 4, DisplayOrder = 5, IsActive = true },
+                new Unit { Id = 6, Name = "12th Bomber Squadron", UniverseId = 1, FactionId = 1, BranchId = 1, ParentUnitId = 4, DisplayOrder = 6, IsActive = true },
                 new Unit { Id = 7, Name = "Fifth Fleet", UniverseId = 2, FactionId = 3, BranchId = 5, DisplayOrder = 1, IsActive = true },
                 new Unit { Id = 8, Name = "3rd Cruiser Wing", UniverseId = 2, FactionId = 3, BranchId = 5, ParentUnitId = 7, DisplayOrder = 2, IsActive = true },
-                new Unit { Id = 9, Name = "USS Avalon", UniverseId = 2, FactionId = 3, BranchId = 5, ParentUnitId = 8, DisplayOrder = 3, IsActive = true },
-                new Unit { Id = 10, Name = "USS Venture", UniverseId = 2, FactionId = 3, BranchId = 5, ParentUnitId = 8, DisplayOrder = 4, IsActive = true },
+                new Unit { Id = 9, Name = "USS Avalon", UniverseId = 2, FactionId = 3, BranchId = 5, ParentUnitId = 8, DisplayOrder = 3, IsActive = true, ShipId = 2 },
+                new Unit { Id = 10, Name = "USS Venture", UniverseId = 2, FactionId = 3, BranchId = 5, ParentUnitId = 8, DisplayOrder = 4, IsActive = true, ShipId = 3 },
                 new Unit { Id = 11, Name = "15th Stormtrooper Legion", UniverseId = 1, FactionId = 1, BranchId = 3, DisplayOrder = 1, IsActive = true },
                 new Unit { Id = 12, Name = "1st Cohort", UniverseId = 1, FactionId = 1, BranchId = 3, ParentUnitId = 11, DisplayOrder = 2, IsActive = true },
                 new Unit { Id = 13, Name = "Aurek Century", UniverseId = 1, FactionId = 1, BranchId = 3, ParentUnitId = 12, DisplayOrder = 3, IsActive = true },
                 new Unit { Id = 14, Name = "Alpha Phalanx", UniverseId = 1, FactionId = 1, BranchId = 3, ParentUnitId = 13, DisplayOrder = 4, IsActive = true },
                 new Unit { Id = 15, Name = "6th Rebel Fleet", UniverseId = 1, FactionId = 2, BranchId = 2, DisplayOrder = 1, IsActive = true },
                 new Unit { Id = 16, Name = "Vanguard Task Group", UniverseId = 1, FactionId = 2, BranchId = 2, ParentUnitId = 15, DisplayOrder = 2, IsActive = true },
-                new Unit { Id = 17, Name = "Red Wing", UniverseId = 1, FactionId = 2, BranchId = 2, ParentUnitId = 16, DisplayOrder = 3, IsActive = true },
-                new Unit { Id = 18, Name = "Rogue Squadron", UniverseId = 1, FactionId = 2, BranchId = 2, ParentUnitId = 16, DisplayOrder = 4, IsActive = true },
-                new Unit { Id = 19, Name = "Strike Fleet Qapla'", UniverseId = 2, FactionId = 4, BranchId = 6, DisplayOrder = 1, IsActive = true },
-                new Unit { Id = 20, Name = "Raiding Group Mogh", UniverseId = 2, FactionId = 4, BranchId = 6, ParentUnitId = 19, DisplayOrder = 2, IsActive = true },
-                new Unit { Id = 21, Name = "Strike Wing SuvwI'", UniverseId = 2, FactionId = 4, BranchId = 6, ParentUnitId = 20, DisplayOrder = 3, IsActive = true },
-                new Unit { Id = 22, Name = "Blade Flight K'Tok", UniverseId = 2, FactionId = 4, BranchId = 6, ParentUnitId = 21, DisplayOrder = 4, IsActive = true }
+                new Unit { Id = 17, Name = "Harmony", UniverseId = 1, FactionId = 2, BranchId = 2, ParentUnitId = 16, DisplayOrder = 3, IsActive = true, ShipId = 4 },
+                new Unit { Id = 18, Name = "Red Wing", UniverseId = 1, FactionId = 2, BranchId = 2, ParentUnitId = 17, DisplayOrder = 4, IsActive = true },
+                new Unit { Id = 19, Name = "Rogue Squadron", UniverseId = 1, FactionId = 2, BranchId = 2, ParentUnitId = 18, DisplayOrder = 5, IsActive = true },
+                new Unit { Id = 20, Name = "Strike Fleet Qapla'", UniverseId = 2, FactionId = 4, BranchId = 6, DisplayOrder = 1, IsActive = true },
+                new Unit { Id = 21, Name = "Raiding Group Mogh", UniverseId = 2, FactionId = 4, BranchId = 6, ParentUnitId = 19, DisplayOrder = 2, IsActive = true },
+                new Unit { Id = 22, Name = "Strike Wing SuvwI'", UniverseId = 2, FactionId = 4, BranchId = 6, ParentUnitId = 20, DisplayOrder = 3, IsActive = true },
+                new Unit { Id = 23, Name = "Blade Flight K'Tok", UniverseId = 2, FactionId = 4, BranchId = 6, ParentUnitId = 21, DisplayOrder = 4, IsActive = true }
+            );
+
+            // Ship Classes Check Constraint
+            builder.Entity<ShipClass>().ToTable(tb =>
+            {
+                tb.HasCheckConstraint("CK_ShipClass_UniverseAndFactionAndBranchRequired", "UniverseId IS NOT NULL AND FactionId IS NOT NULL AND BranchId IS NOT NULL");
+            });
+
+            // Add index to DisplayOrder in Ship Classes
+            builder.Entity<ShipClass>()
+                .HasIndex(u => u.DisplayOrder);
+
+            // Soft delete filter for Ship Classes
+            builder.Entity<ShipClass>()
+                .HasQueryFilter(u => u.IsActive);
+
+            // Add unique index to BranchId and DisplayOrder in Ship Classes for composite awareness in case names repeat across universes
+            builder.Entity<ShipClass>()
+                .HasIndex(f => new { f.BranchId, f.DisplayOrder })
+                .IsUnique();
+
+            // Seeding Ship Classes
+            builder.Entity<ShipClass>().HasData(
+                new ShipClass { Id = 1, Name = "Imperial II-class Star Destroyer", Abbreviation = "ISDII", UniverseId = 1, FactionId = 1, BranchId = 1, DisplayOrder = 1, IsActive = true },
+                new ShipClass { Id = 2, Name = "Akira-class", Abbreviation = "Sovereign", UniverseId = 2, FactionId = 3, BranchId = 5, DisplayOrder = 2, IsActive = true },
+                new ShipClass { Id = 3, Name = "Sovereign-class", Abbreviation = "Akira", UniverseId = 2, FactionId = 3, BranchId = 5, DisplayOrder = 3, IsActive = true },
+                new ShipClass { Id = 4, Name = "MC75 Star Cruiser", Abbreviation = "MC75", UniverseId = 1, FactionId = 2, BranchId = 2, DisplayOrder = 4, IsActive = true }
+            );
+
+            // Ship Check Constraint
+            builder.Entity<Ship>().ToTable(tb =>
+            {
+                tb.HasCheckConstraint("CK_Ship_UniverseAndFactionAndBranchRequired", "UniverseId IS NOT NULL AND FactionId IS NOT NULL AND BranchId IS NOT NULL");
+            });
+
+            // Add index to DisplayOrder in Ship
+            builder.Entity<Ship>()
+                .HasIndex(u => u.DisplayOrder);
+
+            // Soft delete filter for Ship
+            builder.Entity<Ship>()
+                .HasQueryFilter(u => u.IsActive);
+
+            // Add unique index to BranchId and DisplayOrder in Ship for composite awareness in case names repeat across universes
+            builder.Entity<Ship>()
+                .HasIndex(f => new { f.BranchId, f.DisplayOrder })
+                .IsUnique();
+
+            // Seeding Ships
+            builder.Entity<Ship>().HasData(
+                new Ship { Id = 1, Name = "ISD Devastator", ShipClassId = 1, Abbreviation = "Devastator", UniverseId = 1, FactionId = 1, BranchId = 1, DisplayOrder = 1, IsActive = true },
+                new Ship { Id = 2, Name = "USS Avalon", ShipClassId = 2, Abbreviation = "Avalon", ShipRegistry = "NCC-71854", UniverseId = 2, FactionId = 3, BranchId = 5, DisplayOrder = 2, IsActive = true },
+                new Ship { Id = 3, Name = "USS Venture", ShipClassId = 3, Abbreviation = "Venture", ShipRegistry = "NCC-63887", UniverseId = 2, FactionId = 3, BranchId = 5, DisplayOrder = 3, IsActive = true },
+                new Ship { Id = 4, Name = "Harmony", ShipClassId = 4, UniverseId = 1, FactionId = 2, BranchId = 2, DisplayOrder = 4, IsActive = true }
             );
 
             // Position Check Constraint

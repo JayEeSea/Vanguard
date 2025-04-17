@@ -21,6 +21,9 @@ namespace Vanguard.Web.Models
         public int? ParentUnitId { get; set; }
         public Unit? ParentUnit { get; set; }
 
+        public int? ShipId { get; set; }
+        public Ship? Ship { get; set; }
+
         public ICollection<Unit>? SubUnits { get; set; } = new List<Unit>();
         public ICollection<Character>? Characters { get; set; } = new List<Character>();
     }

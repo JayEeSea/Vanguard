@@ -3217,6 +3217,211 @@ namespace Vanguard.Web.Migrations
                         });
                 });
 
+            modelBuilder.Entity("Vanguard.Web.Models.Ship", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Abbreviation")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FactionId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("ShipClassId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ShipRegistry")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("UniverseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisplayOrder");
+
+                    b.HasIndex("FactionId");
+
+                    b.HasIndex("ShipClassId");
+
+                    b.HasIndex("UniverseId");
+
+                    b.HasIndex("BranchId", "DisplayOrder")
+                        .IsUnique();
+
+                    b.ToTable("Ship", t =>
+                        {
+                            t.HasCheckConstraint("CK_Ship_UniverseAndFactionAndBranchRequired", "UniverseId IS NOT NULL AND FactionId IS NOT NULL AND BranchId IS NOT NULL");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Abbreviation = "Devastator",
+                            BranchId = 1,
+                            DisplayOrder = 1,
+                            FactionId = 1,
+                            IsActive = true,
+                            Name = "ISD Devastator",
+                            ShipClassId = 1,
+                            UniverseId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Abbreviation = "Avalon",
+                            BranchId = 5,
+                            DisplayOrder = 2,
+                            FactionId = 3,
+                            IsActive = true,
+                            Name = "USS Avalon",
+                            ShipClassId = 2,
+                            ShipRegistry = "NCC-71854",
+                            UniverseId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Abbreviation = "Venture",
+                            BranchId = 5,
+                            DisplayOrder = 3,
+                            FactionId = 3,
+                            IsActive = true,
+                            Name = "USS Venture",
+                            ShipClassId = 3,
+                            ShipRegistry = "NCC-63887",
+                            UniverseId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            BranchId = 2,
+                            DisplayOrder = 4,
+                            FactionId = 2,
+                            IsActive = true,
+                            Name = "Harmony",
+                            ShipClassId = 4,
+                            UniverseId = 1
+                        });
+                });
+
+            modelBuilder.Entity("Vanguard.Web.Models.ShipClass", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    MySqlPropertyBuilderExtensions.UseMySqlIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Abbreviation")
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("BranchId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasColumnType("longtext");
+
+                    b.Property<int>("DisplayOrder")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("FactionId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("IsActive")
+                        .HasColumnType("tinyint(1)");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("longtext");
+
+                    b.Property<int?>("UniverseId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DisplayOrder");
+
+                    b.HasIndex("FactionId");
+
+                    b.HasIndex("UniverseId");
+
+                    b.HasIndex("BranchId", "DisplayOrder")
+                        .IsUnique();
+
+                    b.ToTable("ShipClasses", t =>
+                        {
+                            t.HasCheckConstraint("CK_ShipClass_UniverseAndFactionAndBranchRequired", "UniverseId IS NOT NULL AND FactionId IS NOT NULL AND BranchId IS NOT NULL");
+                        });
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Abbreviation = "ISDII",
+                            BranchId = 1,
+                            DisplayOrder = 1,
+                            FactionId = 1,
+                            IsActive = true,
+                            Name = "Imperial II-class Star Destroyer",
+                            UniverseId = 1
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Abbreviation = "Sovereign",
+                            BranchId = 5,
+                            DisplayOrder = 2,
+                            FactionId = 3,
+                            IsActive = true,
+                            Name = "Akira-class",
+                            UniverseId = 2
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Abbreviation = "Akira",
+                            BranchId = 5,
+                            DisplayOrder = 3,
+                            FactionId = 3,
+                            IsActive = true,
+                            Name = "Sovereign-class",
+                            UniverseId = 2
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Abbreviation = "MC75",
+                            BranchId = 2,
+                            DisplayOrder = 4,
+                            FactionId = 2,
+                            IsActive = true,
+                            Name = "MC75 Star Cruiser",
+                            UniverseId = 1
+                        });
+                });
+
             modelBuilder.Entity("Vanguard.Web.Models.Species", b =>
                 {
                     b.Property<int>("Id")
@@ -3373,6 +3578,9 @@ namespace Vanguard.Web.Migrations
                     b.Property<int?>("ParentUnitId")
                         .HasColumnType("int");
 
+                    b.Property<int?>("ShipId")
+                        .HasColumnType("int");
+
                     b.Property<int?>("UniverseId")
                         .HasColumnType("int");
 
@@ -3383,6 +3591,8 @@ namespace Vanguard.Web.Migrations
                     b.HasIndex("FactionId");
 
                     b.HasIndex("ParentUnitId");
+
+                    b.HasIndex("ShipId");
 
                     b.HasIndex("UniverseId");
 
@@ -3414,6 +3624,7 @@ namespace Vanguard.Web.Migrations
                             IsActive = true,
                             Name = "ISD Devastator",
                             ParentUnitId = 1,
+                            ShipId = 1,
                             UniverseId = 1
                         },
                         new
@@ -3421,7 +3632,7 @@ namespace Vanguard.Web.Migrations
                             Id = 3,
                             BranchId = 1,
                             DisplayOrder = 3,
-                            FactionId = 2,
+                            FactionId = 1,
                             IsActive = true,
                             Name = "10th Attack Wing",
                             ParentUnitId = 2,
@@ -3432,7 +3643,7 @@ namespace Vanguard.Web.Migrations
                             Id = 4,
                             BranchId = 1,
                             DisplayOrder = 4,
-                            FactionId = 2,
+                            FactionId = 1,
                             IsActive = true,
                             Name = "14th Bombardment Wing",
                             ParentUnitId = 3,
@@ -3443,7 +3654,7 @@ namespace Vanguard.Web.Migrations
                             Id = 5,
                             BranchId = 1,
                             DisplayOrder = 5,
-                            FactionId = 2,
+                            FactionId = 1,
                             IsActive = true,
                             Name = "116th Fighter Squadron",
                             ParentUnitId = 4,
@@ -3454,7 +3665,7 @@ namespace Vanguard.Web.Migrations
                             Id = 6,
                             BranchId = 1,
                             DisplayOrder = 6,
-                            FactionId = 2,
+                            FactionId = 1,
                             IsActive = true,
                             Name = "12th Bomber Squadron",
                             ParentUnitId = 4,
@@ -3490,6 +3701,7 @@ namespace Vanguard.Web.Migrations
                             IsActive = true,
                             Name = "USS Avalon",
                             ParentUnitId = 8,
+                            ShipId = 2,
                             UniverseId = 2
                         },
                         new
@@ -3501,6 +3713,7 @@ namespace Vanguard.Web.Migrations
                             IsActive = true,
                             Name = "USS Venture",
                             ParentUnitId = 8,
+                            ShipId = 3,
                             UniverseId = 2
                         },
                         new
@@ -3574,8 +3787,9 @@ namespace Vanguard.Web.Migrations
                             DisplayOrder = 3,
                             FactionId = 2,
                             IsActive = true,
-                            Name = "Red Wing",
+                            Name = "Harmony",
                             ParentUnitId = 16,
+                            ShipId = 4,
                             UniverseId = 1
                         },
                         new
@@ -3585,13 +3799,24 @@ namespace Vanguard.Web.Migrations
                             DisplayOrder = 4,
                             FactionId = 2,
                             IsActive = true,
-                            Name = "Rogue Squadron",
-                            ParentUnitId = 16,
+                            Name = "Red Wing",
+                            ParentUnitId = 17,
                             UniverseId = 1
                         },
                         new
                         {
                             Id = 19,
+                            BranchId = 2,
+                            DisplayOrder = 5,
+                            FactionId = 2,
+                            IsActive = true,
+                            Name = "Rogue Squadron",
+                            ParentUnitId = 18,
+                            UniverseId = 1
+                        },
+                        new
+                        {
+                            Id = 20,
                             BranchId = 6,
                             DisplayOrder = 1,
                             FactionId = 4,
@@ -3601,7 +3826,7 @@ namespace Vanguard.Web.Migrations
                         },
                         new
                         {
-                            Id = 20,
+                            Id = 21,
                             BranchId = 6,
                             DisplayOrder = 2,
                             FactionId = 4,
@@ -3612,7 +3837,7 @@ namespace Vanguard.Web.Migrations
                         },
                         new
                         {
-                            Id = 21,
+                            Id = 22,
                             BranchId = 6,
                             DisplayOrder = 3,
                             FactionId = 4,
@@ -3623,7 +3848,7 @@ namespace Vanguard.Web.Migrations
                         },
                         new
                         {
-                            Id = 22,
+                            Id = 23,
                             BranchId = 6,
                             DisplayOrder = 4,
                             FactionId = 4,
@@ -3965,6 +4190,57 @@ namespace Vanguard.Web.Migrations
                 {
                     b.HasOne("Vanguard.Web.Models.Branch", "Branch")
                         .WithMany()
+                        .HasForeignKey("BranchId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Vanguard.Web.Models.Faction", "Faction")
+                        .WithMany()
+                        .HasForeignKey("FactionId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.HasOne("Vanguard.Web.Models.Universe", "Universe")
+                        .WithMany()
+                        .HasForeignKey("UniverseId")
+                        .OnDelete(DeleteBehavior.Restrict);
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Faction");
+
+                    b.Navigation("Universe");
+                });
+
+            modelBuilder.Entity("Vanguard.Web.Models.Ship", b =>
+                {
+                    b.HasOne("Vanguard.Web.Models.Branch", "Branch")
+                        .WithMany()
+                        .HasForeignKey("BranchId");
+
+                    b.HasOne("Vanguard.Web.Models.Faction", "Faction")
+                        .WithMany()
+                        .HasForeignKey("FactionId");
+
+                    b.HasOne("Vanguard.Web.Models.ShipClass", "ShipClass")
+                        .WithMany("Ships")
+                        .HasForeignKey("ShipClassId");
+
+                    b.HasOne("Vanguard.Web.Models.Universe", "Universe")
+                        .WithMany()
+                        .HasForeignKey("UniverseId");
+
+                    b.Navigation("Branch");
+
+                    b.Navigation("Faction");
+
+                    b.Navigation("ShipClass");
+
+                    b.Navigation("Universe");
+                });
+
+            modelBuilder.Entity("Vanguard.Web.Models.ShipClass", b =>
+                {
+                    b.HasOne("Vanguard.Web.Models.Branch", "Branch")
+                        .WithMany()
                         .HasForeignKey("BranchId");
 
                     b.HasOne("Vanguard.Web.Models.Faction", "Faction")
@@ -4018,6 +4294,10 @@ namespace Vanguard.Web.Migrations
                         .HasForeignKey("ParentUnitId")
                         .OnDelete(DeleteBehavior.Restrict);
 
+                    b.HasOne("Vanguard.Web.Models.Ship", "Ship")
+                        .WithMany()
+                        .HasForeignKey("ShipId");
+
                     b.HasOne("Vanguard.Web.Models.Universe", "Universe")
                         .WithMany()
                         .HasForeignKey("UniverseId");
@@ -4027,6 +4307,8 @@ namespace Vanguard.Web.Migrations
                     b.Navigation("Faction");
 
                     b.Navigation("ParentUnit");
+
+                    b.Navigation("Ship");
 
                     b.Navigation("Universe");
                 });
@@ -4072,6 +4354,11 @@ namespace Vanguard.Web.Migrations
             modelBuilder.Entity("Vanguard.Web.Models.Rank", b =>
                 {
                     b.Navigation("Characters");
+                });
+
+            modelBuilder.Entity("Vanguard.Web.Models.ShipClass", b =>
+                {
+                    b.Navigation("Ships");
                 });
 
             modelBuilder.Entity("Vanguard.Web.Models.Species", b =>

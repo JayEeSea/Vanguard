@@ -1,0 +1,153 @@
+﻿@model List<Vanguard.Web.Models.Unit>
+
+@{
+    ViewData["Title"] = "Manage Units";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mb-4">@ViewData["Title"]</h2>
+
+<div class="card bg-transparent text-white mb-4 shadow-lg">
+    <div class="card-body">
+        <form method="get" asp-area="Admin" asp-controller="Units" asp-action="Index" class="row g-3 align-items-end">
+            <!-- Branch Dropdown -->
+            <div class="col-md-6">
+                <label for="branchId" class="form-label fw-semibold">Branch</label>
+                <select class="form-select" id="branchId" name="branchId">
+                    <option value="">-- Select Branch --</option>
+                    @foreach (var b in (List<Branch>)ViewBag.Branches)
+                    {
+                        var selected = (ViewBag.SelectedBranchId == b.Id) ? "selected" : "";
+                        @:<option value="@b.Id" @selected>@b.Name</option>
+                    }
+                </select>
+            </div>
+
+            <!-- Filter Buttons -->
+            <div class="col-12">
+                <button type="submit" class="btn btn-primary me-2">Filter</button>
+                <a asp-action="Index" asp-controller="Units" asp-area="Admin" class="btn btn-outline-secondary">Reset</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@if ((bool)ViewBag.HasFiltered)
+{
+    <table class="table table-dark table-hover table-striped align-middle">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Description</th>
+                <th>
+                    Universe
+                    <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="The Universe this unit is assigned to."></i>
+                </th>
+                <th>
+                    Faction
+                    <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="The Faction this unit is assigned to."></i>
+                </th>
+                <th>
+                    Branch
+                    <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="The Branch this unit is assigned to."></i>
+                </th>
+                <th>
+                    Parent Unit
+                    <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="The Parent this unit is assigned to."></i>
+                </th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var units in Model)
+            {
+                <tr class="@(units.IsActive ? "" : "fst-italic text-muted")">
+                    <td>@units.Name</td>
+                    <td>@units.Description</td>
+                    <td>@(units.Universe != null ? units.Universe.Name : "Global")</td>
+                    <td>@(units.Faction != null ? units.Faction.Name : "Global")</td>
+                    <td>@(units.Branch != null ? units.Branch.Name : "Global")</td>
+                    <td>@(units.ParentUnit != null ? units.ParentUnit.Name : (Html.Raw("<em>Top Level Unit</em>")))</td>
+                    <td>
+                        <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editUnitsModal"
+                                data-id="@units.Id">
+                            Edit
+                        </button>
+
+                        @if (units.IsActive)
+                        {
+                            <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#disableUnitsModal"
+                                    data-id="@units.Id">
+                                Disable
+                            </button>
+                        }
+                        else
+                        {
+                            <form asp-action="ReenableUnits" asp-controller="Units" asp-area="Admin" method="post"
+                                  class="reenable-units-form d-inline">
+                                @Html.AntiForgeryToken()
+                                <input type="hidden" name="id" value="@units.Id" />
+                                <button type="submit" class="btn btn-sm btn-success">Enable</button>
+                            </form>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div class="alert alert-info">
+        Use the filter above to display units.
+    </div>
+}
+
+<!-- MODALS  -->
+<!-- Edit Modal -->
+<div class="modal fade" id="editUnitsModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="editUnitsModalPlaceholder">
+                <!-- Loaded via AJAX -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createUnitsModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="createUnitsModalPlaceholder">
+            <!-- Loaded via AJAX -->
+        </div>
+    </div>
+</div>
+
+<!-- Disable Modal -->
+<div class="modal fade" id="disableUnitsModal" tabindex="-1" aria-labelledby="disableModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="disableUnitsModalPlaceholder">
+            <!-- Loaded via AJAX -->
+        </div>
+    </div>
+</div>
+
+<!-- Buttons -->
+<div class="admin-button-group">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createUnitsModal">
+            Add New Unit
+        </a>
+
+        <a asp-area="" asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary">
+            ← Back to Admin Dashboard
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/units.js" asp-append-version="true"></script>
+    <script src="~/js/units-modal.js" asp-append-version="true"></script>
+}
