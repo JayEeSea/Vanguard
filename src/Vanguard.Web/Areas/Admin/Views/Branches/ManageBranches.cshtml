@@ -1,0 +1,109 @@
+﻿@model List<Vanguard.Web.Models.Branch>
+
+@{
+    ViewData["Title"] = "Manage Branches";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h2 class="mb-4">@ViewData["Title"]</h2>
+
+<table class="table table-dark table-hover table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Description</th>
+            <th>
+                Universe
+                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="The Universe this branch is assigned to."></i>
+            </th>
+            <th>
+                Faction
+                <i class="bi bi-info-circle" data-bs-toggle="tooltip" title="The Faction this branch is assigned to."></i>
+            </th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var branches in Model)
+        {
+            <tr class="@(branches.IsActive ? "" : "fst-italic text-muted")">
+                <td>@branches.Name</td>
+                <td>@branches.Description</td>
+                <td>@(branches.Universe != null ? branches.Universe.Name : "Global")</td>
+                <td>@(branches.Faction != null ? branches.Faction.Name : "Global")</td>
+                <td>
+                    <button class="btn btn-sm btn-primary" data-bs-toggle="modal" data-bs-target="#editBranchesModal"
+                            data-id="@branches.Id">
+                        Edit
+                    </button>
+
+                    @if (branches.IsActive)
+                    {
+                        <button class="btn btn-sm btn-danger" data-bs-toggle="modal" data-bs-target="#disableBranchesModal"
+                                data-id="@branches.Id">
+                            Disable
+                        </button>
+                    }
+                    else
+                    {
+                        <form asp-action="ReenableBranches" asp-controller="Branches" asp-area="Admin" method="post"
+                              class="reenable-branches-form d-inline">
+                            @Html.AntiForgeryToken()
+                            <input type="hidden" name="id" value="@branches.Id" />
+                            <button type="submit" class="btn btn-sm btn-success">Enable</button>
+                        </form>
+                    }
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<!-- MODALS  -->
+<!-- Edit Modal -->
+<div class="modal fade" id="editBranchesModal" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div id="editBranchesModalPlaceholder">
+                <!-- Loaded via AJAX -->
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Create Modal -->
+<div class="modal fade" id="createBranchesModal" tabindex="-1" aria-labelledby="createModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="createBranchesModalPlaceholder">
+            <!-- Loaded via AJAX -->
+        </div>
+    </div>
+</div>
+
+<!-- Disable Modal -->
+<div class="modal fade" id="disableBranchesModal" tabindex="-1" aria-labelledby="disableModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content" id="disableBranchesModalPlaceholder">
+            <!-- Loaded via AJAX -->
+        </div>
+    </div>
+</div>
+
+<!-- Buttons -->
+<div class="admin-button-group">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <a href="#" class="btn btn-success" data-bs-toggle="modal" data-bs-target="#createBranchesModal">
+            Add New Faction
+        </a>
+
+        <a asp-area="" asp-controller="Admin" asp-action="Index" class="btn btn-outline-secondary">
+            ← Back to Admin Dashboard
+        </a>
+    </div>
+</div>
+
+@section Scripts {
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/branches.js" asp-append-version="true"></script>
+    <script src="~/js/branches-modal.js" asp-append-version="true"></script>
+}

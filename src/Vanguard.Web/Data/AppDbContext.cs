@@ -1,5 +1,6 @@
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using System.Reflection.Emit;
 using Vanguard.Web.Models;
 
 namespace Vanguard.Web.Data
@@ -402,6 +403,27 @@ namespace Vanguard.Web.Data
             builder.Entity<Rank>()
                 .HasIndex(f => new { f.BranchId, f.DisplayOrder })
                 .IsUnique();
+
+            // Rank → Universe (optional)
+            builder.Entity<Rank>()
+                .HasOne(r => r.Universe)
+                .WithMany()
+                .HasForeignKey(r => r.UniverseId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Rank → Faction (optional)
+            builder.Entity<Rank>()
+                .HasOne(r => r.Faction)
+                .WithMany()
+                .HasForeignKey(r => r.FactionId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Rank → Branch (optional)
+            builder.Entity<Rank>()
+                .HasOne(r => r.Branch)
+                .WithMany()
+                .HasForeignKey(r => r.BranchId)
+                .OnDelete(DeleteBehavior.Restrict);
 
             // Seeding Ranks
             builder.Entity<Rank>().HasData(

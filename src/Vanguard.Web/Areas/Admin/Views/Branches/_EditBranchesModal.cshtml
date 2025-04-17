@@ -1,0 +1,56 @@
+﻿@model Vanguard.Web.Models.Branch
+
+<form id="editBranchesForm" method="post" asp-action="editbranches" asp-controller="Branches" asp-area="Admin" class="text-dark bg-light">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+
+    <div class="modal-header">
+        <h5 class="modal-title">Edit Branch</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+    </div>
+
+    <div class="modal-body">
+        <div class="mb-3">
+            <label asp-for="Name" class="form-label"></label>
+            <input asp-for="Name" class="form-control" />
+            <span asp-validation-for="Name" class="text-danger"></span>
+        </div>
+
+        <div class="mb-3">
+            <label asp-for="Description" class="form-label"></label>
+            <textarea asp-for="Description" class="form-control"></textarea>
+            <span asp-validation-for="Description" class="text-danger"></span>
+        </div>
+
+        <!-- Universe Dropdown -->
+        <div class="mb-3">
+            <label for="UniverseId" class="form-label" data-bs-toggle="tooltip" title="Select the universe this branch belongs to.">Universe</label>
+            <select class="form-select" id="UniverseId" name="UniverseId">
+                <option value="">-- Select Universe --</option>
+                @if (ViewBag.Universes is List<Universe> universes)
+                {
+                    foreach (var universe in universes)
+                    {
+                        var selectedAttr = Model.UniverseId == universe.Id ? "selected" : "";
+                        @:<option value="@universe.Id" @selectedAttr>@universe.Name</option>
+                    }
+                }
+            </select>
+        </div>
+
+        <!-- Faction Dropdown -->
+        <div class="mb-3">
+            <label for="FactionId" class="form-label" data-bs-toggle="tooltip" title="Select the faction this branch belongs to.">Faction</label>
+            <select class="form-select" id="FactionId" name="FactionId" data-current-id="@Model.FactionId">
+                <option value="">-- Select Faction --</option>
+            </select>
+        </div>
+    </div>
+
+    <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Save</button>
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+    </div>
+</form>
+
+<script src="~/js/site.js" asp-append-version="true"></script>
