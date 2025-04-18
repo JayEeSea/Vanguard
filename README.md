@@ -55,7 +55,7 @@ This platform is ideal for clubs and fan communities seeking to manage character
 
 ### 1. Clone the repository
 ```bash
-git clone https://github.com/yourusername/Vanguard.git
+git clone https://github.com/JayEeSea/Vanguard.git
 cd Vanguard
 ```
 
