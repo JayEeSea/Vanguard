@@ -60,9 +60,9 @@ namespace Vanguard.Web.Data
                 new PositionType { Id = 3, Name = "Branch Leader", RoleName = "BranchLeader", Level = 3, RequiresScope = true, IsActive = true, DisplayOrder = 6 },
                 new PositionType { Id = 4, Name = "Unit Leader", RoleName = "UnitLeader", Level = 5, RequiresScope = true, IsActive = true, DisplayOrder = 8 },
                 new PositionType { Id = 5, Name = "SubUnit Leader", RoleName = "SubUnitLeader", Level = 6, RequiresScope = true, IsActive = true, DisplayOrder = 9 },
-                new PositionType { Id = 6, Name = "Command Staff", RoleName = "CommandStaff", Level = 0, RequiresScope = false, IsActive = true, DisplayOrder = 1 },
-                new PositionType { Id = 7, Name = "Command Staff Deputy", RoleName = "CommandStaffDeputy", Level = 1, RequiresScope = false, IsActive = true, DisplayOrder = 2 },
-                new PositionType { Id = 8, Name = "Command Staff Assistant", RoleName = "CommandStaffAssistant", Level = 2, RequiresScope = false, IsActive = true, DisplayOrder = 3 },
+                new PositionType { Id = 6, Name = "Command Group", RoleName = "CommandGroup", Level = 0, RequiresScope = false, IsActive = true, DisplayOrder = 1 },
+                new PositionType { Id = 7, Name = "Command Group Deputy", RoleName = "CommandGroupDeputy", Level = 1, RequiresScope = false, IsActive = true, DisplayOrder = 2 },
+                new PositionType { Id = 8, Name = "Command StaGroupff Assistant", RoleName = "CommandGroupAssistant", Level = 2, RequiresScope = false, IsActive = true, DisplayOrder = 3 },
                 new PositionType { Id = 9, Name = "Branch Command", RoleName = "BranchCommand", Level = 4, RequiresScope = true, IsActive = true, DisplayOrder = 7 },
                 new PositionType { Id = 10, Name = "Member", RoleName = "Member", Level = 7, RequiresScope = true, IsActive = true, DisplayOrder = 10 }
             );
