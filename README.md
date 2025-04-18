@@ -11,9 +11,11 @@
 
 ## 🚀 Overview
 
-**Vanguard** is a modular fan club platform designed to support communities across multiple sci-fi universes, such as **Star Wars** and **Star Trek**. It provides user registration, character management, administrative tools, and rich database integration — all powered by ASP.NET Core MVC and MariaDB.
+**Vanguard** is a modular fan club platform built to support communities across multiple science fiction universes, including **Star Wars** and **Star Trek**. Developed using ASP.NET Core MVC and MariaDB, it features user registration, character management, administrative tools, and comprehensive database integration.
 
-This project is ideal for clubs and communities looking to manage characters, universes, factions, and events in a web-based environment.
+Inspired by my time in fan organisations such as [Emperor's Hammer](https://emperorshammer.org/), [Dark Jedi Brotherhood](https://www.darkjedibrotherhood.com/), and [Bravo Fleet](https://bravofleet.com/), Vanguard reimagines what once required a dedicated webmaster to build from scratch — now achievable with some technical know-how and configuration.
+
+This platform is ideal for clubs and fan communities seeking to manage characters, universes, factions, and events within a fully web-based environment.
 
 ---
 
