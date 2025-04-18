@@ -1,7 +1,7 @@
 # Vanguard
 
-<h2 style="text-align:center;">United Across Galaxies</h2>
-<h2 style="text-align:center;">A fan club management platform built with ASP.NET Core MVC</h2>
+<h3 style="text-align:center;">United Across Galaxies</h3>
+<h4 style="text-align:center;">A fan club management platform built with ASP.NET Core MVC</h4>
 
 <p align="center">
   <img width="500" height="500" src="https://raw.githubusercontent.com/JayEeSea/Vanguard/refs/heads/main/src/Vanguard.Web/wwwroot/images/logo.jpg">
