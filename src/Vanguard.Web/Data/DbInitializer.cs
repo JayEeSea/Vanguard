@@ -12,7 +12,7 @@ namespace Vanguard.Web.Data
             var userManager = serviceProvider.GetRequiredService<UserManager<ApplicationUser>>();
 
             // Create roles
-            string[] roleNames = { "GlobalAdmin", "CommandStaff", "UniverseLeader", "FactionLeader", "BranchLeader", "UnitLeader", "ProspectiveMember", "FullMember", "InactiveMember" };
+            string[] roleNames = { "GlobalAdmin", "CommandGroup", "UniverseLeader", "FactionLeader", "BranchLeader", "UnitLeader", "ProspectiveMember", "FullMember", "InactiveMember" };
 
             foreach (var role in roleNames)
             {
