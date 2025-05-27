@@ -1,6 +1,6 @@
-namespace Vanguard.Web.Models
-{
-    public class Species
+namespace Vanguard.Web.Models;
+
+public class Species
 {
     public int Id { get; set; }
     public required string Name { get; set; }
@@ -20,5 +20,4 @@ namespace Vanguard.Web.Models
     public Species? CanonicalSpecies { get; set; }
 
     public ICollection<Character>? Characters { get; set; }
-}
 }

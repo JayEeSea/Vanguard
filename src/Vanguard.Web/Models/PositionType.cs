@@ -1,5 +1,4 @@
-namespace Vanguard.Web.Models
-{
+namespace Vanguard.Web.Models;
     public class PositionType
     {
         public int Id { get; set; }
@@ -12,4 +11,3 @@ namespace Vanguard.Web.Models
 
         public ICollection<Position>? Positions { get; set; } = new List<Position>();
     }
-}
